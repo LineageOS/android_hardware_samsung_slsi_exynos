@@ -68,7 +68,7 @@
 #include "s5p_tvout_v4l2.h"
 #include "ExynosHWCModule.h"
 #include "ExynosRect.h"
-#include "videodev2.h"
+#include <linux/videodev2.h>
 
 #ifdef USE_FB_PHY_LINEAR
 const size_t NUM_HW_WIN_FB_PHY = 5;

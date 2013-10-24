@@ -59,7 +59,7 @@
 #include "ExynosHWCModule.h"
 #include "s5p_tvout_v4l2.h"
 #include "ExynosRect.h"
-#include "videodev2.h"
+#include <linux/videodev2.h>
 
 
 #ifdef __GNUC__

@@ -19,9 +19,13 @@ LOCAL_PRELINK_MODULE := false
 LOCAL_SHARED_LIBRARIES := liblog libutils libcutils libexynosutils libexynosv4l2
 
 LOCAL_C_INCLUDES := \
+	$(TARGET_OUT_INTERMEDIATES)/KERNEL_OBJ/usr/include \
 	$(LOCAL_PATH)/../include \
 	$(TOP)/hardware/samsung_slsi/exynos/include \
 	$(TOP)/hardware/samsung_slsi/exynos/libexynosutils
+
+LOCAL_ADDITIONAL_DEPENDENCIES += \
+	$(TARGET_OUT_INTERMEDIATES)/KERNEL_OBJ/usr
 
 LOCAL_SRC_FILES := libscaler.cpp libscaler-v4l2.cpp libscalerblend-v4l2.cpp libscaler-m2m1shot.cpp libscaler-swscaler.cpp
 ifeq ($(BOARD_USES_SCALER_M2M1SHOT), true)

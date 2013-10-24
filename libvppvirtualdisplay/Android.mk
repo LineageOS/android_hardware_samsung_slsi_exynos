@@ -22,6 +22,7 @@ LOCAL_SHARED_LIBRARIES := liblog libutils libcutils libexynosutils \
 LOCAL_CFLAGS += -DLOG_TAG=\"virtualdisplay\"
 
 LOCAL_C_INCLUDES := \
+	$(TARGET_OUT_INTERMEDIATES)/KERNEL_OBJ/usr/include \
 	$(LOCAL_PATH)/../include \
 	$(LOCAL_PATH)/../libhwcutils \
 	$(LOCAL_PATH)/../libvppdisplay \
@@ -38,6 +39,9 @@ LOCAL_C_INCLUDES := \
 	$(TOP)/hardware/samsung_slsi/$(TARGET_SOC)/libdisplaymodule \
 	$(TOP)/hardware/samsung_slsi/exynos/libmpp \
 	$(TOP)/system/core/libsync/include
+
+LOCAL_ADDITIONAL_DEPENDENCIES += \
+	$(TARGET_OUT_INTERMEDIATES)/KERNEL_OBJ/usr
 
 LOCAL_SRC_FILES := \
 	ExynosVirtualDisplay.cpp

@@ -3,7 +3,7 @@
 
 #include "ExynosHWC.h"
 #include "ExynosDisplay.h"
-#include "../../exynos/kernel-3.10-headers/videodev2.h"
+#include <linux/videodev2.h>
 #ifdef USES_VDS_BGRA8888
 #include "ExynosMPPModule.h"
 #endif

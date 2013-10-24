@@ -39,12 +39,12 @@
 
 #include <sys/poll.h>
 
-#include "videodev2_exynos_media.h"
+#include <linux/videodev2_exynos_media.h>
 #ifdef USE_EXYNOS_MEDIA_EXT
-#include "videodev2_exynos_media_ext.h"
+#include <linux/videodev2_exynos_media_ext.h>
 #endif
 #ifdef USE_MFC_MEDIA
-#include "exynos_mfc_media.h"
+#include <linux/exynos_mfc_media.h>
 #endif
 
 #include <ion/ion.h>

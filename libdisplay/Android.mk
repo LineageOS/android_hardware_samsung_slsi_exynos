@@ -33,6 +33,7 @@ endif
 LOCAL_CFLAGS += -DLOG_TAG=\"display\"
 LOCAL_CFLAGS += -DHLOG_CODE=1
 LOCAL_C_INCLUDES := \
+	$(TARGET_OUT_INTERMEDIATES)/KERNEL_OBJ/usr/include \
 	$(TOP)/hardware/samsung_slsi/$(TARGET_SOC)/include \
 	$(TOP)/hardware/samsung_slsi/$(TARGET_BOARD_PLATFORM)/include \
 	$(LOCAL_PATH)/../include \
@@ -42,6 +43,9 @@ LOCAL_C_INCLUDES := \
 	$(TOP)/hardware/samsung_slsi/exynos/libmpp \
 	$(TOP)/hardware/samsung_slsi/$(TARGET_SOC)/libhwcmodule \
 	$(TOP)/hardware/samsung_slsi/$(TARGET_SOC)/libhwcutilsmodule
+
+LOCAL_ADDITIONAL_DEPENDENCIES := \
+	$(TARGET_OUT_INTERMEDIATES)/KERNEL_OBJ/usr
 
 LOCAL_SRC_FILES := \
 	ExynosDisplay.cpp \

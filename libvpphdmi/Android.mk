@@ -35,16 +35,6 @@ LOCAL_C_INCLUDES := \
 	$(TOP)/hardware/samsung_slsi/exynos/libmpp \
 	$(TOP)/system/core/libsync/include
 
-ifeq ($(filter 3.10, $(TARGET_LINUX_KERNEL_VERSION)), 3.10)
-LOCAL_C_INCLUDES += $(TOP)/hardware/samsung_slsi/exynos/kernel-3.10-headers
-else
-ifeq ($(filter 3.18, $(TARGET_LINUX_KERNEL_VERSION)), 3.18)
-LOCAL_C_INCLUDES += $(TOP)/hardware/samsung_slsi/exynos/kernel-3.18-headers
-else
-LOCAL_C_INCLUDES += $(TOP)/hardware/samsung_slsi/exynos/kernel-3.4-headers
-endif
-endif
-
 LOCAL_SRC_FILES := \
 	ExynosExternalDisplay.cpp dv_timings.c
 

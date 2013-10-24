@@ -25,7 +25,7 @@
 // This prevents conflict from the Exynos HAL from the original videodev2.h
 /*
 #ifndef v4l2_fourcc
-#include <videodev2.h>
+#include <linux/videodev2.h>
 #endif
 */
 

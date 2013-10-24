@@ -24,7 +24,7 @@
 #include "FimgApi.h"
 
 #ifdef FIMG2D_USE_M2M1SHOT2
-#include "videodev2.h"
+#include <linux/videodev2.h>
 #include <linux/m2m1shot2.h>
 
 /* include freq leveling and compromise table */

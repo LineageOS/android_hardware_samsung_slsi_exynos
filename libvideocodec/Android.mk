@@ -8,10 +8,14 @@ LOCAL_SRC_FILES := \
 	enc/ExynosVideoEncoder.c
 
 LOCAL_C_INCLUDES := \
+	$(TARGET_OUT_INTERMEDIATES)/KERNEL_OBJ/usr/include \
 	$(LOCAL_PATH)/include \
 	$(TOP)/hardware/samsung_slsi/exynos/include \
 	$(TOP)/hardware/samsung_slsi/$(TARGET_BOARD_PLATFORM)/include \
 	$(TOP)/system/core/libion/include
+
+LOCAL_ADDITIONAL_DEPENDENCIES += \
+	$(TARGET_OUT_INTERMEDIATES)/KERNEL_OBJ/usr
 
 ifeq ($(BOARD_USE_KHRONOS_OMX_HEADER), true)
 LOCAL_C_INCLUDES += $(TOP)/hardware/samsung_slsi/openmax/include/khronos
