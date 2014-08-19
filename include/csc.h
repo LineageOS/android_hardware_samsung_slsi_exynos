@@ -87,6 +87,25 @@ typedef enum _CSC_HW_TYPE {
     CSC_HW_TYPE_GSCALER
 } CSC_HW_TYPE;
 
+typedef enum _CSC_EQ_MODE {
+    CSC_EQ_MODE_USER = 0,
+    CSC_EQ_MODE_AUTO
+} CSC_EQ_MODE;
+
+typedef enum _CSC_EQ_COLORSPACE {
+    CSC_EQ_COLORSPACE_SMPTE170M = 1,
+    CSC_EQ_COLORSPACE_SMPTE240M,
+    CSC_EQ_COLORSPACE_REC709,
+    CSC_EQ_COLORSPACE_BT878,
+    CSC_EQ_COLORSPACE_470_SYSTEM_M,
+    CSC_EQ_COLORSPACE_470_SYSTEM_BG
+} CSC_EQ_COLORSPACE;
+
+typedef enum _CSC_EQ_RANGE {
+    CSC_EQ_RANGE_NARROW = 0,
+    CSC_EQ_RANGE_FULL
+} CSC_EQ_RANGE;
+
 typedef struct _CSC_FORMAT {
     unsigned int width;
     unsigned int height;
@@ -118,6 +137,11 @@ typedef struct _CSC_HANDLE {
     CSC_HW_TYPE     csc_hw_type;
     void           *csc_hw_handle;
     CSC_HW_PROPERTY hw_property;
+
+    /* CSC Equation */
+    CSC_EQ_MODE       csc_mode;
+    CSC_EQ_RANGE      csc_range;
+    CSC_EQ_COLORSPACE colorspace;
 } CSC_HANDLE;
 
 /*
@@ -216,6 +240,54 @@ CSC_ERRORCODE csc_set_hw_property(
     void                *handle,
     CSC_HW_PROPERTY_TYPE property,
     int                  value);
+
+/*
+ * Get csc equation property.
+ *
+ * @param handle
+ *   CSC handle[in]
+ *
+ * @param mode
+ *   csc equation mode[out]
+ *
+ * @param colorspace
+ *   csc color space[out]
+ *
+ * @param range
+ *   csc equation range[out]
+ *
+ * @return
+ *   error code
+ */
+CSC_ERRORCODE csc_get_eq_property(
+    void              *handle,
+    CSC_EQ_MODE       *csc_mode,
+    CSC_EQ_RANGE      *csc_range,
+    CSC_EQ_COLORSPACE *colorspace);
+
+/*
+ * Set csc equation property.
+ *
+ * @param handle
+ *   CSC handle[in]
+ *
+ * @param mode
+ *   csc equation mode[in]
+ *
+ * @param colorspace
+ *   csc color space[in]
+ *
+ * @param range
+ *   csc equation range[in]
+ *
+ * @return
+ *   error code
+ */
+CSC_ERRORCODE csc_set_eq_property(
+    void              *handle,
+    CSC_EQ_MODE        csc_mode,
+    CSC_EQ_RANGE       csc_range,
+    CSC_EQ_COLORSPACE  colorspace);
 
 /*
  * Get source format.

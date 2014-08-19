@@ -173,7 +173,7 @@ int SyncFimgApi(void);
 
 void printDataBlit(char *title, struct fimg2d_blit *cmd);
 void printDataBlitRotate(int rotate);
-void printDataBlitImage(char *title, struct fimg2d_image *image);
-void printDataBlitRect(char *title, struct fimg2d_rect *rect);
+void printDataBlitImage(const char *title, struct fimg2d_image *image);
+void printDataBlitRect(const char *title, struct fimg2d_rect *rect);
 void printDataBlitScale(struct fimg2d_scale *scaling);
 #endif //FIMG_API_H

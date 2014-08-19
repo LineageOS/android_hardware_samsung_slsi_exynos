@@ -43,7 +43,7 @@
 #include <utils/Log.h>
 #include "Exynos_log.h"
 
-#define VIDEODEV_MINOR_MAX 69
+#define VIDEODEV_MAX 255
 
 //#define EXYNOS_V4L2_TRACE 0
 #ifdef EXYNOS_V4L2_TRACE
@@ -112,24 +112,23 @@ int exynos_v4l2_open_devname(const char *devname, int oflag, ...)
     va_list ap;
     FILE *stream_fd;
     char filename[64], name[64];
-    int minor, size, i = 0;
+    int size, i = 0;
 
     Exynos_v4l2_In();
 
     do {
-        if (i > VIDEODEV_MINOR_MAX)
+        if (i > VIDEODEV_MAX)
             break;
 
         /* video device node */
-        snprintf(filename, sizeof(filename), "/dev/video%d", i++);
+        snprintf(filename, sizeof(filename), "/dev/video%d", i);
 
         /* if the node is video device */
         if ((lstat(filename, &s) == 0) && S_ISCHR(s.st_mode) &&
                 ((int)((unsigned short)(s.st_rdev) >> 8) == 81)) {
-            minor = (int)((unsigned short)(s.st_rdev & 0x3f));
-            ALOGD("try node: %s, minor: %d", filename, minor);
+            ALOGD("try node: %s", filename);
             /* open sysfs entry */
-            snprintf(filename, sizeof(filename), "/sys/class/video4linux/video%d/name", minor);
+            snprintf(filename, sizeof(filename), "/sys/class/video4linux/video%d/name", i);
             if (S_ISLNK(s.st_mode)) {
                 ALOGE("symbolic link detected");
                 return -1;
@@ -150,15 +149,17 @@ int exynos_v4l2_open_devname(const char *devname, int oflag, ...)
             } else {
                 /* matched */
                 if (strncmp(name, devname, strlen(devname)) == 0) {
-                    ALOGI("node found for device %s: /dev/video%d", devname, minor);
+                    ALOGI("node found for device %s: /dev/video%d", devname, i);
                     found = true;
+                    break;
                 }
             }
         }
+        i++;
     } while (found == false);
 
     if (found) {
-        snprintf(filename, sizeof(filename), "/dev/video%d", minor);
+        snprintf(filename, sizeof(filename), "/dev/video%d", i);
         va_start(ap, oflag);
         fd = __v4l2_open(filename, oflag, ap);
         va_end(ap);

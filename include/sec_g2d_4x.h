@@ -25,7 +25,17 @@
 #define FIMG2D_BITBLT_BLIT      _IOWR(FIMG2D_IOCTL_MAGIC, 0, struct fimg2d_blit)
 #define FIMG2D_BITBLT_SYNC      _IOW(FIMG2D_IOCTL_MAGIC, 1, int)
 #define FIMG2D_BITBLT_VERSION   _IOR(FIMG2D_IOCTL_MAGIC, 2, struct fimg2d_version)
+#define FIMG2D_BITBLT_ACTIVATE  _IOW(FIMG2D_IOCTL_MAGIC, 3, enum driver_act)
 
+enum driver_act {
+    DRV_ACT = 0,
+    DRV_DEACT
+};
+
+struct fimg2d_version {
+    unsigned int hw;
+    unsigned int sw;
+};
 
 /**
  * @BLIT_SYNC: sync mode, to wait for blit done irq

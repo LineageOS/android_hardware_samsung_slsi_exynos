@@ -69,7 +69,6 @@ private :
 
     Mutex          *m_lock;
 
-    static Mutex    m_instanceLock;
     static unsigned m_curFimgV4xIndex;
     static int      m_numOfInstance;
 

@@ -110,7 +110,7 @@ int CECClose()
 int CECAllocLogicalAddress(int paddr, enum CECDeviceType devtype)
 {
     unsigned char laddr = CEC_LADDR_UNREGISTERED;
-    int i = 0;
+    size_t i = 0;
 
     if (fd == -1) {
         ALOGE("open device first!\n");
@@ -257,7 +257,7 @@ int CECSetLogicalAddr(unsigned int laddr)
 void CECPrintFrame(unsigned char *buffer, unsigned int size)
 {
     if (size > 0) {
-        int i;
+        size_t i;
         ALOGI("fsize: %d ", size);
         ALOGI("frame: ");
         for (i = 0; i < size; i++)

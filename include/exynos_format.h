@@ -22,31 +22,58 @@ extern "C" {
 #endif
 
 enum {
-    HAL_PIXEL_FORMAT_YCbCr_422_P                = 0x100,
-    HAL_PIXEL_FORMAT_YCbCr_420_P                = 0x101,
-    HAL_PIXEL_FORMAT_YCbCr_420_I                = 0x102,
-    HAL_PIXEL_FORMAT_CbYCrY_422_I               = 0x103,
-    HAL_PIXEL_FORMAT_CbYCrY_420_I               = 0x104,
-    HAL_PIXEL_FORMAT_YCbCr_420_SP               = 0x105,
-    HAL_PIXEL_FORMAT_YCrCb_422_SP               = 0x106,
-    HAL_PIXEL_FORMAT_YCbCr_420_SP_TILED         = 0x107,
-    HAL_PIXEL_FORMAT_CUSTOM_ARGB_8888           = 0x108,
+                                                           /* HAL_PIXEL_FORMAT_YCbCr_422_P = 0x100, */
+    HAL_PIXEL_FORMAT_EXYNOS_YCbCr_420_P_M       = 0x101,   /* HAL_PIXEL_FORMAT_YCbCr_420_P */
+                                                           /* HAL_PIXEL_FORMAT_YCbCr_420_I = 0x102, */
+    HAL_PIXEL_FORMAT_EXYNOS_CbYCrY_422_I        = 0x103,   /* HAL_PIXEL_FORMAT_CbYCrY_422_I */
+                                                           /* HAL_PIXEL_FORMAT_CbYCrY_420_I = 0x104, */
+    HAL_PIXEL_FORMAT_EXYNOS_YCbCr_420_SP_M      = 0x105,   /* HAL_PIXEL_FORMAT_YCbCr_420_SP */
+    HAL_PIXEL_FORMAT_EXYNOS_YCrCb_422_SP        = 0x106,   /* HAL_PIXEL_FORMAT_YCrCb_422_SP */
+    HAL_PIXEL_FORMAT_EXYNOS_YCbCr_420_SP_M_TILED= 0x107,   /* HAL_PIXEL_FORMAT_YCbCr_420_SP_TILED */
+    HAL_PIXEL_FORMAT_EXYNOS_ARGB_8888           = 0x108,   /* HAL_PIXEL_FORMAT_CUSTOM_ARGB_8888 */
     // support custom format for zero copy
-    HAL_PIXEL_FORMAT_CUSTOM_YCbCr_420_SP        = 0x110,
-    HAL_PIXEL_FORMAT_CUSTOM_YCrCb_420_SP        = 0x111,
-    HAL_PIXEL_FORMAT_CUSTOM_YCbCr_420_SP_TILED  = 0x112,
-    HAL_PIXEL_FORMAT_CUSTOM_YCbCr_422_SP        = 0x113,
-    HAL_PIXEL_FORMAT_CUSTOM_YCrCb_422_SP        = 0x114,
-    HAL_PIXEL_FORMAT_CUSTOM_YCbCr_422_I         = 0x115,
-    HAL_PIXEL_FORMAT_CUSTOM_YCrCb_422_I         = 0x116,
-    HAL_PIXEL_FORMAT_CUSTOM_CbYCrY_422_I        = 0x117,
-    HAL_PIXEL_FORMAT_CUSTOM_CrYCbY_422_I        = 0x118,
-    HAL_PIXEL_FORMAT_CUSTOM_CbYCr_422_I         = 0x11B,
+                                                           /* HAL_PIXEL_FORMAT_CUSTOM_YCbCr_420_SP = 0x110 */
+                                                           /* HAL_PIXEL_FORMAT_CUSTOM_YCrCb_420_SP = 0x111, */
+                                                           /* HAL_PIXEL_FORMAT_CUSTOM_YCbCr_420_SP_TILED  = 0x112, */
+                                                           /* HAL_PIXEL_FORMAT_CUSTOM_YCbCr_422_SP = 0x113, */
+                                                           /* HAL_PIXEL_FORMAT_CUSTOM_YCrCb_422_SP = 0x114, */
+                                                           /* HAL_PIXEL_FORMAT_CUSTOM_YCbCr_422_I  = 0x115, */
+    HAL_PIXEL_FORMAT_EXYNOS_YCrCb_422_I         = 0x116,   /* HAL_PIXEL_FORMAT_CUSTOM_YCrCb_422_I */
+                                                           /* HAL_PIXEL_FORMAT_CUSTOM_CbYCrY_422_I = 0x117, */
+    HAL_PIXEL_FORMAT_EXYNOS_CrYCbY_422_I        = 0x118,   /* HAL_PIXEL_FORMAT_CUSTOM_CrYCbY_422_I */
+                                                           /* HAL_PIXEL_FORMAT_CUSTOM_CbYCr_422_I = 0x11B, */
 
-    HAL_PIXEL_FORMAT_EXYNOS_YV12                = 0x11C,
-    HAL_PIXEL_FORMAT_EXYNOS_YCrCb_420_SP        = 0x11D,
-    HAL_PIXEL_FORMAT_EXYNOS_YCrCb_420_SP_FULL   = 0x11E,
-    HAL_PIXEL_FORMAT_CUSTOM_MAX
+    HAL_PIXEL_FORMAT_EXYNOS_YV12_M              = 0x11C,   /* HAL_PIXEL_FORMAT_EXYNOS_YV12 */
+    HAL_PIXEL_FORMAT_EXYNOS_YCrCb_420_SP_M      = 0x11D,   /* HAL_PIXEL_FORMAT_EXYNOS_YCrCb_420_SP */
+    HAL_PIXEL_FORMAT_EXYNOS_YCrCb_420_SP_M_FULL = 0x11E,   /* HAL_PIXEL_FORMAT_EXYNOS_YCrCb_420_SP_FULL */
+
+    /* newly added formats */
+    HAL_PIXEL_FORMAT_EXYNOS_YCbCr_420_P         = 0x11F,
+    HAL_PIXEL_FORMAT_EXYNOS_YCbCr_420_SP        = 0x120,
+
+    HAL_PIXEL_FORMAT_EXYNOS_MAX
+};
+
+/* for backward compatibility */
+#define HAL_PIXEL_FORMAT_CUSTOM_YCbCr_420_SP    HAL_PIXEL_FORMAT_EXYNOS_YCbCr_420_SP_M
+#define HAL_PIXEL_FORMAT_CUSTOM_YCrCb_420_SP    HAL_PIXEL_FORMAT_EXYNOS_YCrCb_420_SP_M
+
+// Gamut (colorspace range)
+enum {
+    HAL_PIXEL_GAMUT_DEFAULT = 0,
+    // Values range 0-255
+    HAL_PIXEL_GAMUT_WIDE_8,
+    // Values range 16-235
+    HAL_PIXEL_GAMUT_NARROW_8
+};
+
+// Chromaticities (colorspace parameters)
+enum {
+    HAL_PIXEL_CHROMA_DEFAULT = 0,
+    // BT.601 "Standard Definition" color space
+    HAL_PIXEL_CHROMA_BT601_8,
+    // BT.709 "High Definition" color space
+    HAL_PIXEL_CHROMA_BT709_8
 };
 
 struct ADDRS {
@@ -61,10 +88,18 @@ struct ADDRS {
 
 #define ALIGN_UP(x, a)    (((x) + (a) - 1) & ~((a) - 1))
 #define ALIGN_DOWN(x, a)  ((x) - (x % a))
+#ifndef ALIGN
 #define ALIGN(x, a)       ALIGN_UP(x, a)
+#endif
+#ifndef ALIGN_TO_32B
 #define ALIGN_TO_32B(x)   ((((x) + (1 <<  5) - 1) >>  5) <<  5)
+#endif
+#ifndef ALIGN_TO_128B
 #define ALIGN_TO_128B(x)  ((((x) + (1 <<  7) - 1) >>  7) <<  7)
+#endif
+#ifndef ALIGN_TO_8KB
 #define ALIGN_TO_8KB(x)   ((((x) + (1 << 13) - 1) >> 13) << 13)
+#endif
 
 #define GET_32BPP_FRAME_SIZE(w, h)  (((w) * (h)) << 2)
 #define GET_24BPP_FRAME_SIZE(w, h)  (((w) * (h)) * 3)

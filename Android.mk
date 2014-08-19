@@ -22,8 +22,46 @@ common_exynos_dirs := \
 	libv4l2 \
 	libexynosutils \
 	libfimg4x \
-	libcec
+	libcec \
+	libvideocodec \
+	libmpp \
+	libhwcutils \
+	libdisplay \
+	exyrngd
+
+ifneq ($(BOARD_TV_PRIMARY), true)
+common_exynos_dirs += \
+	libhwc
+endif
+
+ifeq ($(BOARD_USES_VIRTUAL_DISPLAY), true)
+common_exynos_dirs += \
+	libvirtualdisplay
+endif
+
+ifeq ($(BOARD_USE_ALP_AUDIO), true)
+ifeq ($(BOARD_USE_SEIREN_AUDIO), true)
+common_exynos_dirs += \
+	libseiren
+else
+common_exynos_dirs += \
+	libsrp
+endif
+endif
+
+ifeq ($(BOARD_HDMI_INCAPABLE), true)
+common_exynos_dirs += libhdmi_dummy
+else
+ifeq ($(BOARD_USES_NEW_HDMI), true)
+common_exynos_dirs += libhdmi
+else
+common_exynos_dirs += libhdmi_legacy
+endif
+endif
+
+ifeq ($(BOARD_USES_FIMGAPI_V4L2), true)
+common_exynos_dirs += \
+	libg2d
+endif
 
 include $(call all-named-subdir-makefiles,$(common_exynos_dirs))
-
-endif

@@ -67,54 +67,56 @@ int HAL_PIXEL_FORMAT_2_V4L2_PIX(
         v4l2_pixel_format = V4L2_PIX_FMT_BGR32;
         break;
 
-    case HAL_PIXEL_FORMAT_EXYNOS_YV12:
+    case HAL_PIXEL_FORMAT_EXYNOS_YV12_M:
         v4l2_pixel_format = V4L2_PIX_FMT_YVU420M;
+        break;
+
+    case HAL_PIXEL_FORMAT_EXYNOS_YCbCr_420_P_M:
+        v4l2_pixel_format = V4L2_PIX_FMT_YUV420M;
         break;
 
     case HAL_PIXEL_FORMAT_YV12:
         v4l2_pixel_format = V4L2_PIX_FMT_YVU420;
         break;
 
-    case HAL_PIXEL_FORMAT_YCbCr_420_P:
-        v4l2_pixel_format = V4L2_PIX_FMT_YUV420M;
+    case HAL_PIXEL_FORMAT_EXYNOS_YCbCr_420_P:
+        v4l2_pixel_format = V4L2_PIX_FMT_YUV420;
         break;
 
     case HAL_PIXEL_FORMAT_YCbCr_422_SP:
-    case HAL_PIXEL_FORMAT_CUSTOM_YCbCr_422_SP:
         v4l2_pixel_format = V4L2_PIX_FMT_NV16;
         break;
 
-    case HAL_PIXEL_FORMAT_YCbCr_420_SP:
-    case HAL_PIXEL_FORMAT_CUSTOM_YCbCr_420_SP:
+    case HAL_PIXEL_FORMAT_EXYNOS_YCbCr_420_SP:
+        v4l2_pixel_format = V4L2_PIX_FMT_NV12;
+        break;
+
+    case HAL_PIXEL_FORMAT_EXYNOS_YCbCr_420_SP_M:
         v4l2_pixel_format = V4L2_PIX_FMT_NV12M;
         break;
 
     case HAL_PIXEL_FORMAT_YCbCr_422_I:
-    case HAL_PIXEL_FORMAT_CUSTOM_YCbCr_422_I:
         v4l2_pixel_format = V4L2_PIX_FMT_YUYV;
         break;
 
-    case HAL_PIXEL_FORMAT_YCbCr_422_P:
-        v4l2_pixel_format = V4L2_PIX_FMT_YUV422P;
-        break;
-
-    case HAL_PIXEL_FORMAT_CbYCrY_422_I:
-    case HAL_PIXEL_FORMAT_CUSTOM_CbYCrY_422_I:
+    case HAL_PIXEL_FORMAT_EXYNOS_CbYCrY_422_I:
         v4l2_pixel_format = V4L2_PIX_FMT_UYVY;
         break;
 
-    case HAL_PIXEL_FORMAT_YCrCb_422_SP:
-    case HAL_PIXEL_FORMAT_CUSTOM_YCrCb_422_SP:
+    case HAL_PIXEL_FORMAT_EXYNOS_YCrCb_422_SP:
         v4l2_pixel_format = V4L2_PIX_FMT_NV61;
         break;
 
-    case HAL_PIXEL_FORMAT_EXYNOS_YCrCb_420_SP:
-    case HAL_PIXEL_FORMAT_CUSTOM_YCrCb_420_SP:
-    case HAL_PIXEL_FORMAT_YCrCb_420_SP:
+    case HAL_PIXEL_FORMAT_EXYNOS_YCrCb_420_SP_M:
+    case HAL_PIXEL_FORMAT_EXYNOS_YCrCb_420_SP_M_FULL:
         v4l2_pixel_format = V4L2_PIX_FMT_NV21M;
         break;
 
-   case HAL_PIXEL_FORMAT_YCbCr_420_SP_TILED:
+    case HAL_PIXEL_FORMAT_YCrCb_420_SP:
+        v4l2_pixel_format = V4L2_PIX_FMT_NV21;
+        break;
+
+   case HAL_PIXEL_FORMAT_EXYNOS_YCbCr_420_SP_M_TILED:
 #ifdef ENABLE_FIMC
 	v4l2_pixel_format = V4L2_PIX_FMT_NV12MT;
 #else
@@ -122,19 +124,11 @@ int HAL_PIXEL_FORMAT_2_V4L2_PIX(
 #endif
 	break;
 
-    case HAL_PIXEL_FORMAT_CUSTOM_YCbCr_420_SP_TILED:
-#ifdef ENABLE_FIMC
-	v4l2_pixel_format = V4L2_PIX_FMT_NV12MT;
-#else
-	v4l2_pixel_format = V4L2_PIX_FMT_NV12MT_16X16;
-#endif
-	break;
-
-   case HAL_PIXEL_FORMAT_CUSTOM_YCrCb_422_I:
+   case HAL_PIXEL_FORMAT_EXYNOS_YCrCb_422_I:
         v4l2_pixel_format = V4L2_PIX_FMT_YVYU;
         break;
 
-   case HAL_PIXEL_FORMAT_CUSTOM_CrYCbY_422_I:
+   case HAL_PIXEL_FORMAT_EXYNOS_CrYCbY_422_I:
         v4l2_pixel_format = V4L2_PIX_FMT_VYUY;
         break;
 
@@ -170,8 +164,11 @@ int V4L2_PIX_2_HAL_PIXEL_FORMAT(
         break;
 
     case V4L2_PIX_FMT_YUV420:
+        hal_pixel_format = HAL_PIXEL_FORMAT_EXYNOS_YCbCr_420_P;
+	break;
+
     case V4L2_PIX_FMT_YUV420M:
-        hal_pixel_format = HAL_PIXEL_FORMAT_YCbCr_420_P;
+        hal_pixel_format = HAL_PIXEL_FORMAT_EXYNOS_YCbCr_420_P_M;
         break;
 
     case V4L2_PIX_FMT_YVU420:
@@ -179,55 +176,52 @@ int V4L2_PIX_2_HAL_PIXEL_FORMAT(
         break;
 
     case V4L2_PIX_FMT_YVU420M:
-         hal_pixel_format = HAL_PIXEL_FORMAT_EXYNOS_YV12;
-         break;
+        hal_pixel_format = HAL_PIXEL_FORMAT_EXYNOS_YV12_M;
+        break;
 
     case V4L2_PIX_FMT_NV16:
-        hal_pixel_format = HAL_PIXEL_FORMAT_CUSTOM_YCbCr_422_SP;
+        hal_pixel_format = HAL_PIXEL_FORMAT_YCbCr_422_SP;
         break;
 
     case V4L2_PIX_FMT_NV12:
-        hal_pixel_format = HAL_PIXEL_FORMAT_YCbCr_420_SP;
+        hal_pixel_format = HAL_PIXEL_FORMAT_EXYNOS_YCbCr_420_SP;
         break;
 
     case V4L2_PIX_FMT_NV12M:
-        hal_pixel_format = HAL_PIXEL_FORMAT_CUSTOM_YCbCr_420_SP;
+        hal_pixel_format = HAL_PIXEL_FORMAT_EXYNOS_YCbCr_420_SP_M;
         break;
 
     case V4L2_PIX_FMT_NV21M:
-        hal_pixel_format = HAL_PIXEL_FORMAT_EXYNOS_YCrCb_420_SP;
+        hal_pixel_format = HAL_PIXEL_FORMAT_EXYNOS_YCrCb_420_SP_M;
         break;
 
     case V4L2_PIX_FMT_YUYV:
-        hal_pixel_format = HAL_PIXEL_FORMAT_CUSTOM_YCbCr_422_I;
-        break;
-
-    case V4L2_PIX_FMT_YUV422P:
-        hal_pixel_format = HAL_PIXEL_FORMAT_YCbCr_422_P;
+        hal_pixel_format = HAL_PIXEL_FORMAT_YCbCr_422_I;
         break;
 
     case V4L2_PIX_FMT_UYVY:
-        hal_pixel_format = HAL_PIXEL_FORMAT_CUSTOM_CbYCrY_422_I;
+        hal_pixel_format = HAL_PIXEL_FORMAT_EXYNOS_CbYCrY_422_I;
         break;
 
     case V4L2_PIX_FMT_NV21:
-        hal_pixel_format = HAL_PIXEL_FORMAT_CUSTOM_YCrCb_420_SP;
+        hal_pixel_format = HAL_PIXEL_FORMAT_YCrCb_420_SP;
         break;
+
     case V4L2_PIX_FMT_NV12MT:
     case V4L2_PIX_FMT_NV12MT_16X16:
-        hal_pixel_format = HAL_PIXEL_FORMAT_YCbCr_420_SP_TILED;
+        hal_pixel_format = HAL_PIXEL_FORMAT_EXYNOS_YCbCr_420_SP_M_TILED;
         break;
 
     case V4L2_PIX_FMT_NV61:
-        hal_pixel_format = HAL_PIXEL_FORMAT_CUSTOM_YCrCb_422_SP;
+        hal_pixel_format = HAL_PIXEL_FORMAT_EXYNOS_YCrCb_422_SP;
         break;
 
     case V4L2_PIX_FMT_YVYU:
-        hal_pixel_format = HAL_PIXEL_FORMAT_CUSTOM_YCrCb_422_I;
+        hal_pixel_format = HAL_PIXEL_FORMAT_EXYNOS_YCrCb_422_I;
         break;
 
     case V4L2_PIX_FMT_VYUY:
-        hal_pixel_format = HAL_PIXEL_FORMAT_CUSTOM_CrYCbY_422_I;
+        hal_pixel_format = HAL_PIXEL_FORMAT_EXYNOS_CrYCbY_422_I;
         break;
 
     default:
@@ -242,20 +236,25 @@ int V4L2_PIX_2_HAL_PIXEL_FORMAT(
 int NUM_PLANES(int hal_pixel_format)
 {
     switch(hal_pixel_format) {
-    case HAL_PIXEL_FORMAT_EXYNOS_YV12:
-    case HAL_PIXEL_FORMAT_YCbCr_420_P:
+    case HAL_PIXEL_FORMAT_EXYNOS_YV12_M:
+    case HAL_PIXEL_FORMAT_EXYNOS_YCbCr_420_P_M:
 	return 3;
-    case HAL_PIXEL_FORMAT_EXYNOS_YCrCb_420_SP:
-    case HAL_PIXEL_FORMAT_YCrCb_420_SP:
-    case HAL_PIXEL_FORMAT_YCbCr_420_SP:
-    case HAL_PIXEL_FORMAT_CUSTOM_YCbCr_420_SP:
-    case HAL_PIXEL_FORMAT_CUSTOM_YCrCb_420_SP:
-    case HAL_PIXEL_FORMAT_CUSTOM_YCbCr_420_SP_TILED:
+    case HAL_PIXEL_FORMAT_EXYNOS_YCbCr_420_SP_M:
+    case HAL_PIXEL_FORMAT_EXYNOS_YCrCb_420_SP_M:
+    case HAL_PIXEL_FORMAT_EXYNOS_YCrCb_420_SP_M_FULL:
+    case HAL_PIXEL_FORMAT_EXYNOS_YCbCr_420_SP_M_TILED:
 	return 2;
 	break;
-    case HAL_PIXEL_FORMAT_YCbCr_420_I:
-    case HAL_PIXEL_FORMAT_CbYCrY_420_I:
     case HAL_PIXEL_FORMAT_YV12:
+    case HAL_PIXEL_FORMAT_YCrCb_420_SP:
+    case HAL_PIXEL_FORMAT_YCbCr_422_I:
+    case HAL_PIXEL_FORMAT_YCbCr_422_SP:
+    case HAL_PIXEL_FORMAT_EXYNOS_YCbCr_420_SP:
+    case HAL_PIXEL_FORMAT_EXYNOS_YCbCr_420_P:
+    case HAL_PIXEL_FORMAT_EXYNOS_YCrCb_422_I:
+    case HAL_PIXEL_FORMAT_EXYNOS_CbYCrY_422_I:
+    case HAL_PIXEL_FORMAT_EXYNOS_CrYCbY_422_I:
+    case HAL_PIXEL_FORMAT_EXYNOS_YCrCb_422_SP:
         return 1;
     default:
 	return 1;
@@ -289,45 +288,26 @@ unsigned int FRAME_SIZE(
         break;
 
     // 12bpp
-    case HAL_PIXEL_FORMAT_EXYNOS_YV12:
-    case HAL_PIXEL_FORMAT_YCbCr_420_P:
-    case HAL_PIXEL_FORMAT_YCbCr_420_I:
-    case HAL_PIXEL_FORMAT_CbYCrY_420_I:
-        size = ALIGN(width, 16) * ALIGN(height, 16);
-        frame_size = size + 2 * ALIGN(width >> 1, 8) * ALIGN(height >> 1, 8);
-        break;
-
+    case HAL_PIXEL_FORMAT_EXYNOS_YCbCr_420_P:
     case HAL_PIXEL_FORMAT_YV12:
         size = ALIGN(width, 16) * height;
         frame_size = size + ALIGN(width / 2, 16) * height;
         break;
 
-    case HAL_PIXEL_FORMAT_EXYNOS_YCrCb_420_SP:
-    case HAL_PIXEL_FORMAT_YCrCb_420_SP:
-    case HAL_PIXEL_FORMAT_YCbCr_420_SP:
-    case HAL_PIXEL_FORMAT_CUSTOM_YCbCr_420_SP:
-    case HAL_PIXEL_FORMAT_CUSTOM_YCrCb_420_SP:
-        size = ALIGN(ALIGN(width, 16) * ALIGN(height, 16), 2048);
-        frame_size = size + ALIGN(ALIGN(width, 16) * ALIGN(height >> 1, 8), 2048);
-        break;
 
-    case HAL_PIXEL_FORMAT_CUSTOM_YCbCr_420_SP_TILED:
-        frame_size =   ALIGN_TO_8KB(ALIGN_TO_128B(width) * ALIGN_TO_32B(height))
-                     + ALIGN_TO_8KB(ALIGN_TO_128B(width) * ALIGN_TO_32B(height >> 1));
+    case HAL_PIXEL_FORMAT_YCrCb_420_SP:
+    case HAL_PIXEL_FORMAT_EXYNOS_YCbCr_420_SP:
+
+        frame_size = width * height * 3 / 2;
         break;
 
     // 16bpp
     case HAL_PIXEL_FORMAT_YCbCr_422_SP:
     case HAL_PIXEL_FORMAT_YCbCr_422_I:
-    case HAL_PIXEL_FORMAT_YCbCr_422_P:
-    case HAL_PIXEL_FORMAT_CbYCrY_422_I:
-    case HAL_PIXEL_FORMAT_YCrCb_422_SP:
-    case HAL_PIXEL_FORMAT_CUSTOM_YCbCr_422_SP:
-    case HAL_PIXEL_FORMAT_CUSTOM_YCrCb_422_SP:
-    case HAL_PIXEL_FORMAT_CUSTOM_YCbCr_422_I:
-    case HAL_PIXEL_FORMAT_CUSTOM_YCrCb_422_I:
-    case HAL_PIXEL_FORMAT_CUSTOM_CbYCrY_422_I:
-    case HAL_PIXEL_FORMAT_CUSTOM_CrYCbY_422_I:
+    case HAL_PIXEL_FORMAT_EXYNOS_CbYCrY_422_I:
+    case HAL_PIXEL_FORMAT_EXYNOS_YCrCb_422_SP:
+    case HAL_PIXEL_FORMAT_EXYNOS_YCrCb_422_I:
+    case HAL_PIXEL_FORMAT_EXYNOS_CrYCbY_422_I:
         frame_size = GET_16BPP_FRAME_SIZE(width, height);
         break;
 
@@ -340,56 +320,17 @@ unsigned int FRAME_SIZE(
     return frame_size;
 }
 
-int PLANAR_FRAME_SIZE(int hal_pixel_format, int width, int height,
-                        unsigned int *luma_size, unsigned int *chroma_size)
-{
-    unsigned int size = 0;
-
-    switch(hal_pixel_format) {
-    case HAL_PIXEL_FORMAT_EXYNOS_YV12:
-    case HAL_PIXEL_FORMAT_YCbCr_420_P:
-        size = width * height;
-        *luma_size = size;
-        *chroma_size = size >> 2;
-        break;
-    case HAL_PIXEL_FORMAT_EXYNOS_YCrCb_420_SP:
-    case HAL_PIXEL_FORMAT_YCrCb_420_SP:
-    case HAL_PIXEL_FORMAT_YCbCr_420_I:
-    case HAL_PIXEL_FORMAT_CbYCrY_420_I:
-    case HAL_PIXEL_FORMAT_YCbCr_420_SP:
-    case HAL_PIXEL_FORMAT_CUSTOM_YCbCr_420_SP:
-    case HAL_PIXEL_FORMAT_CUSTOM_YCrCb_420_SP:
-        size = width * height;
-        *luma_size = size;
-        *chroma_size = (size >> 2) << 1;
-        break;
-    case HAL_PIXEL_FORMAT_CUSTOM_YCbCr_420_SP_TILED:
-        *luma_size = ALIGN_TO_8KB(ALIGN_TO_128B(width) * ALIGN_TO_32B(height));
-        *chroma_size = ALIGN_TO_8KB(ALIGN_TO_128B(width) *
-                        ALIGN_TO_32B(height >> 1));
-        break;
-    case HAL_PIXEL_FORMAT_YV12:
-        size = ALIGN(width, 16) * height;
-        *luma_size = size + ALIGN(width / 2, 16) * height;
-        break;
-    default:
-        *luma_size = FRAME_SIZE(hal_pixel_format, width, height);
-        break;
-    }
-
-    return 0;
-}
-
-
 int V4L2_PIX_2_YUV_INFO(unsigned int v4l2_pixel_format, unsigned int * bpp, unsigned int * planes)
 {
     switch (v4l2_pixel_format) {
     case V4L2_PIX_FMT_NV12:
+    case V4L2_PIX_FMT_NV21:
+    case V4L2_PIX_FMT_YUV420:
+    case V4L2_PIX_FMT_YVU420:
         *bpp    = 12;
         *planes = 1;
         break;
-    case V4L2_PIX_FMT_NV21:
-    case V4L2_PIX_FMT_NV21X:
+
     case V4L2_PIX_FMT_NV12M:
     case V4L2_PIX_FMT_NV21M:
     case V4L2_PIX_FMT_NV12MT:
@@ -397,30 +338,22 @@ int V4L2_PIX_2_YUV_INFO(unsigned int v4l2_pixel_format, unsigned int * bpp, unsi
         *bpp    = 12;
         *planes = 2;
         break;
-    case V4L2_PIX_FMT_YUV420:
+
     case V4L2_PIX_FMT_YUV420M:
     case V4L2_PIX_FMT_YVU420M:
-    case V4L2_PIX_FMT_YVU420:
         *bpp    = 12;
         *planes = 3;
         break;
+
     case V4L2_PIX_FMT_YUYV:
     case V4L2_PIX_FMT_YVYU:
     case V4L2_PIX_FMT_UYVY:
     case V4L2_PIX_FMT_VYUY:
+    case V4L2_PIX_FMT_NV16:
+    case V4L2_PIX_FMT_NV61:
         *bpp    = 16;
         *planes = 1;
         break;
-    case V4L2_PIX_FMT_NV16:
-    case V4L2_PIX_FMT_NV61:
-    case V4L2_PIX_FMT_NV16X:
-    case V4L2_PIX_FMT_NV61X:
-        *bpp    = 16;
-        *planes = 2;
-        break;
-    case V4L2_PIX_FMT_YUV422P:
-        *bpp    = 16;
-        *planes = 3;
         break;
     default:
         return -1;

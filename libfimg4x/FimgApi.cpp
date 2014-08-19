@@ -23,6 +23,8 @@
 
 #include "FimgApi.h"
 
+pthread_mutex_t s_g2d_lock = PTHREAD_MUTEX_INITIALIZER;
+
 struct blit_op_table optbl[] = {
     { (int)BLIT_OP_SOLID_FILL, "FILL" },
     { (int)BLIT_OP_CLR, "CLR" },
@@ -227,10 +229,13 @@ bool FimgApi::t_UnLock(void)
 //---------------------------------------------------------------------------//
 extern "C" int stretchFimgApi(struct fimg2d_blit *cmd)
 {
+    pthread_mutex_lock(&s_g2d_lock);
+
     FimgApi * fimgApi = createFimgApi();
 
     if (fimgApi == NULL) {
         PRINT("%s::createFimgApi() fail\n", __func__);
+        pthread_mutex_unlock(&s_g2d_lock);
         return -1;
     }
 
@@ -238,12 +243,14 @@ extern "C" int stretchFimgApi(struct fimg2d_blit *cmd)
         if (fimgApi != NULL)
             destroyFimgApi(fimgApi);
 
+        pthread_mutex_unlock(&s_g2d_lock);
         return -1;
     }
 
     if (fimgApi != NULL)
         destroyFimgApi(fimgApi);
 
+    pthread_mutex_unlock(&s_g2d_lock);
     return 0;
 }
 
@@ -388,9 +395,11 @@ extern "C" int stretchFimgApi_fast(struct fimg2d_blit *cmd, unsigned long tmpbuf
 
 extern "C" int SyncFimgApi(void)
 {
+    pthread_mutex_lock(&s_g2d_lock);
     FimgApi * fimgApi = createFimgApi();
     if (fimgApi == NULL) {
         PRINT("%s::createFimgApi() fail\n", __func__);
+        pthread_mutex_unlock(&s_g2d_lock);
         return -1;
     }
 
@@ -398,12 +407,14 @@ extern "C" int SyncFimgApi(void)
         if (fimgApi != NULL)
             destroyFimgApi(fimgApi);
 
+        pthread_mutex_unlock(&s_g2d_lock);
         return -1;
     }
 
     if (fimgApi != NULL)
         destroyFimgApi(fimgApi);
 
+    pthread_mutex_unlock(&s_g2d_lock);
     return 0;
 }
 
@@ -431,7 +442,7 @@ void printDataBlit(char *title, struct fimg2d_blit *cmd)
     printDataBlitRect("MSK", &cmd->msk->rect);
 }
 
-void printDataBlitImage(char *title, struct fimg2d_image *image)
+void printDataBlitImage(const char *title, struct fimg2d_image *image)
 {
     if (NULL != image) {
     SLOGI("    Image_%s\n", title);
@@ -441,7 +452,7 @@ void printDataBlitImage(char *title, struct fimg2d_image *image)
         SLOGI("    Image_%s : NULL\n", title);
 }
 
-void printDataBlitRect(char *title, struct fimg2d_rect *rect)
+void printDataBlitRect(const char *title, struct fimg2d_rect *rect)
 {
     if (NULL != rect) {
         SLOGI("    RECT_%s\n", title);
