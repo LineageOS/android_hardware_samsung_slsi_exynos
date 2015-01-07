@@ -43,7 +43,11 @@
 #include <utils/Log.h>
 #include "Exynos_log.h"
 
+#ifdef SOC_EXYNOS5430
+#define VIDEODEV_MINOR_MAX 69
+#else
 #define VIDEODEV_MINOR_MAX 63
+#endif
 
 //#define EXYNOS_V4L2_TRACE 0
 #ifdef EXYNOS_V4L2_TRACE

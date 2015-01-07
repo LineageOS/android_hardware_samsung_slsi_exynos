@@ -26,6 +26,10 @@ LOCAL_C_INCLUDES := \
 	$(LOCAL_PATH)/../include \
 	$(TOP)/hardware/samsung_slsi/exynos/libexynosutils
 
+ifeq ($(TARGET_SOC), exynos5430)
+	LOCAL_CFLAGS += -DSOC_EXYNOS5430
+endif
+
 LOCAL_ADDITIONAL_DEPENDENCIES := \
 	$(TARGET_OUT_INTERMEDIATES)/KERNEL_OBJ/usr
 
