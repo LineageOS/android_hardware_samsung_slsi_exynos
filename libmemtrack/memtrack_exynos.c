@@ -15,6 +15,9 @@
  */
 
 #include <errno.h>
+#include <stdlib.h>
+#include <string.h>
+#include <log/log.h>
 
 #include <hardware/memtrack.h>
 
@@ -40,8 +43,38 @@ int exynos_memtrack_get_memory(const struct memtrack_module __unused *module,
     return -EINVAL;
 }
 
+static int memtrack_open(__attribute__((unused)) const hw_module_t* module, const char* name,
+                    hw_device_t** device)
+{
+    ALOGD("%s: enter; name=%s", __FUNCTION__, name);
+    int retval = 0; /* 0 is ok; -1 is error */
+
+    if (strcmp(name, "memtrack") == 0) {
+        struct memtrack_module *dev = (struct memtrack_module *)calloc(1,
+                sizeof(struct memtrack_module));
+
+        if (dev) {
+            /* Common hw_device_t fields */
+            dev->common.tag = HARDWARE_DEVICE_TAG;
+            dev->common.module_api_version = MEMTRACK_MODULE_API_VERSION_0_1;
+            dev->common.hal_api_version = HARDWARE_HAL_API_VERSION;
+
+            dev->init = exynos_memtrack_init;
+            dev->getMemory = exynos_memtrack_get_memory;
+
+            *device = (hw_device_t*)dev;
+        } else
+            retval = -ENOMEM;
+    } else {
+        retval = -EINVAL;
+    }
+
+    ALOGD("%s: exit %d", __FUNCTION__, retval);
+    return retval;
+}
+
 static struct hw_module_methods_t memtrack_module_methods = {
-    .open = NULL,
+    .open = memtrack_open,
 };
 
 struct memtrack_module HAL_MODULE_INFO_SYM = {
