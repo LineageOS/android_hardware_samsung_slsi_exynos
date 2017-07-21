@@ -521,8 +521,8 @@ void handle_hdmi_uevent(struct exynos5_hwc_composer_device_1_t *pdev,
         pdev->procs->hotplug(pdev->procs, HWC_DISPLAY_EXTERNAL, pdev->hdmi_hpd);
 }
 
-void handle_tui_uevent(struct exynos5_hwc_composer_device_1_t *pdev,
-        const char *buff, int len)
+void handle_tui_uevent(struct exynos5_hwc_composer_device_1_t *pdev __unused,
+        const char *buff __unused, int len __unused)
 {
 #ifdef USES_VPP
 #ifdef DISABLE_IDMA_SECURE
