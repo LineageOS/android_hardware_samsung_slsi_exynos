@@ -21,7 +21,10 @@
 #define LOG_TAG "FimgExynos5"
 #include <utils/Log.h>
 
+#ifdef FIMG2D_USE_M2M1SHOT2
 #include <linux/m2m1shot2.h>
+#endif
+
 #include "FimgExynos5.h"
 
 extern pthread_mutex_t s_g2d_lock;
