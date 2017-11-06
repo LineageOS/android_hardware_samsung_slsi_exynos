@@ -230,22 +230,13 @@ SYNC_FAIL:
 
 bool FimgV4x::t_Lock(void)
 {
-    if (&m_lock != NULL) {
-        status_t ret = m_lock.lock();
-        return true;
-    }
-    PRINT("%s::m_lock is NULL",__func__);
-    return false;
+    return m_lock.lock();
 }
 
 bool FimgV4x::t_UnLock(void)
 {
-    if (&m_lock != NULL) {
-        m_lock.unlock();
-        return true;
-    }
-    PRINT("%s::m_lock is NULL",__func__);
-    return false;
+    m_lock.unlock();
+    return true;
 }
 
 bool FimgV4x::m_CreateG2D(void)
