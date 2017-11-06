@@ -502,7 +502,7 @@ int ExynosOverlayDisplay::handleWindowUpdate(hwc_display_contents_1_t* contents,
     int intersectionWidth = 0;
 
     char value[PROPERTY_VALUE_MAX];
-    property_get("debug.hwc.winupdate", value, NULL);
+    property_get("debug.hwc.winupdate", value, "1");
 
     if (!(!strcmp(value, "1") || !strcmp(value, "true")))
         return 0;
