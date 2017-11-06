@@ -51,4 +51,24 @@ enum {
 #define EXYNOS_ION_HEAP_GPU_BUFFER          (1 << ION_EXYNOS_HEAP_ID_GPU_BUFFER)
 #define EXYNOS_ION_HEAP_CAMERA              (1 << ION_EXYNOS_HEAP_ID_CAMERA)
 
+/*
+ * Values taken from Linux kernel to keep /system/core clean.
+ * Normally, these would go into libion/kernel-headers/linux/ion.h.
+ */
+#ifndef ION_FLAG_NOZEROED
+#define ION_FLAG_NOZEROED 8		/* Allocated buffer is not initialized
+					   with zero value and userspace is not
+					   able to access the buffer
+					 */
+#endif
+#ifndef ION_FLAG_PROTECTED
+#define ION_FLAG_PROTECTED 16		/* this buffer would be used in secure
+					   world. if this is set, all cpu accesses
+					   are prohibited.
+					 */
+#endif
+#ifndef ION_FLAG_SYNC_FORCE
+#define ION_FLAG_SYNC_FORCE 32		/* cache sync forcely at allocation */
+#endif
+
 #endif /* _LIB_ION_H_ */
