@@ -103,9 +103,11 @@ int HAL_PIXEL_FORMAT_2_V4L2_PIX(
         v4l2_pixel_format = V4L2_PIX_FMT_NV12M;
         break;
 
+#ifdef V4L2_PIX_FMT_NV12N_10B
     case HAL_PIXEL_FORMAT_EXYNOS_YCbCr_420_SPN_S10B:
         v4l2_pixel_format = V4L2_PIX_FMT_NV12N_10B;
         break;
+#endif
 
     case HAL_PIXEL_FORMAT_YCbCr_422_I:
         v4l2_pixel_format = V4L2_PIX_FMT_YUYV;
@@ -252,9 +254,11 @@ int V4L2_PIX_2_HAL_PIXEL_FORMAT(
         hal_pixel_format = HAL_PIXEL_FORMAT_EXYNOS_CrYCbY_422_I;
         break;
 
+#ifdef V4L2_PIX_FMT_NV12N_10B
     case V4L2_PIX_FMT_NV12N_10B:
         hal_pixel_format = HAL_PIXEL_FORMAT_EXYNOS_YCbCr_420_SPN_S10B;
         break;
+#endif
 
     default:
         ALOGE("%s::unmatched V4L2_PIX color_space(%d)\n",

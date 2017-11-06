@@ -251,7 +251,9 @@ static ExynosVideoColorFormatType __V4L2PixelFormat_To_ColorFormatType(unsigned 
         break;
 #ifdef USE_SINGLE_PALNE_SUPPORT
     case V4L2_PIX_FMT_NV12N:
+#ifdef V4L2_PIX_FMT_NV12N_10B
     case V4L2_PIX_FMT_NV12N_10B:
+#endif
         colorFormatType = VIDEO_COLORFORMAT_NV12;
         break;
     case V4L2_PIX_FMT_YUV420N:
