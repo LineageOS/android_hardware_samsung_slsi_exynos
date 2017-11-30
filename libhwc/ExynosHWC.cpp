@@ -15,6 +15,7 @@
  */
 #define ATRACE_TAG ATRACE_TAG_GRAPHICS
 
+#include <bfqio/bfqio.h>
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <unistd.h>
@@ -631,6 +632,7 @@ void *hwc_vsync_thread(void *data)
     if (sched_setscheduler(gettid(), SCHED_FIFO, &sched_param) != 0) {
         ALOGE("Couldn't set SCHED_FIFO for hwc_vsync");
     }
+    android_set_rt_ioprio(0, 1);
 
     uevent_init();
 
