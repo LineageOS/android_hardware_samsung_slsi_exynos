@@ -1071,15 +1071,15 @@ int exynos_setPowerMode(struct hwc_composer_device_1* dev, int disp, int mode)
     case HWC_DISPLAY_PRIMARY: {
 #ifdef USES_VPP
         if ((mode == HWC_POWER_MODE_DOZE) || (mode == HWC_POWER_MODE_DOZE_SUSPEND)) {
-            if (pdev->primaryDisplay->mBlanked == 0) {
-                fb_blank = FB_BLANK_POWERDOWN;
+            if (pdev->primaryDisplay->mBlanked == 1) {
+                fb_blank = FB_BLANK_UNBLANK;
                 int err = ioctl(pdev->primaryDisplay->mDisplayFd, FBIOBLANK, fb_blank);
                 if (err < 0) {
                     ALOGE("blank ioctl failed: %s, mode(%d)", strerror(errno), mode);
                     return -errno;
                 }
             }
-            pdev->primaryDisplay->mBlanked = 1;
+            pdev->primaryDisplay->mBlanked = 0;
             return pdev->primaryDisplay->setPowerMode(mode);
         }
 #endif
