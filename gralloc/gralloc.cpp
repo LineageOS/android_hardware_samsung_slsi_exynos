@@ -275,8 +275,8 @@ static int gralloc_alloc_framework_yuv(int ionfd, int w, int h, int format, int 
     size_t size=0, ext_size=256;
     int err, fd;
     unsigned int heap_mask = _select_heap(usage);
-    int is_compressible = 0;
-    uint64_t internal_format = 0;
+    int is_compressible = check_for_compression(w, h, format, usage);
+    uint64_t internal_format = gralloc_select_format(format, usage, is_compressible);
 
     switch (format) {
         case HAL_PIXEL_FORMAT_YV12:
@@ -349,6 +349,9 @@ static int gralloc_alloc_yuv(int ionfd, int w, int h, int format,
             ion_flags |= ION_EXYNOS_MFC_OUTPUT_MASK;
     } else if (usage & GRALLOC_USAGE_CAMERA_RESERVED)
         ion_flags |= ION_EXYNOS_MFC_OUTPUT_MASK;
+
+    is_compressible = check_for_compression(w, h, format, usage);
+    internal_format = gralloc_select_format(format, usage, is_compressible);
 
     switch (format) {
         case HAL_PIXEL_FORMAT_EXYNOS_YV12_M:
