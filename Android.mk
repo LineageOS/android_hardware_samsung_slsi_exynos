@@ -14,6 +14,8 @@
 # limitations under the License.
 #
 
+ifeq ($(TARGET_SLSI_VARIANT),bsp)
+
 common_exynos_dirs := \
 	libion_exynos \
 	libexynosutils \
@@ -134,3 +136,5 @@ endif
 endif
 
 include $(call all-named-subdir-makefiles,$(common_exynos_dirs))
+
+endif # TARGET_SLSI_VARIANT
