@@ -626,7 +626,11 @@ void *hwc_vsync_thread(void *data)
     char uevent_desc[4096];
     memset(uevent_desc, 0, sizeof(uevent_desc));
 
-    setpriority(PRIO_PROCESS, 0, HAL_PRIORITY_URGENT_DISPLAY);
+    struct sched_param sched_param = {0};
+    sched_param.sched_priority = 5;
+    if (sched_setscheduler(gettid(), SCHED_FIFO, &sched_param) != 0) {
+        ALOGE("Couldn't set SCHED_FIFO for hwc_vsync");
+    }
 
     uevent_init();
 
