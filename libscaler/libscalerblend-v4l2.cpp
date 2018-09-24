@@ -116,9 +116,11 @@ void CScalerBlendV4L2::GetCustomAlphaBlendFmt(int32_t &src_color_space,
     } else if (src_color_space == V4L2_PIX_FMT_NV12) {
             if ((srcblendfmt == V4L2_PIX_FMT_RGB32))
             src_color_space = V4L2_PIX_FMT_NV12_RGB32;
+#ifdef V4L2_PIX_FMT_NV12N
     } else if (src_color_space == V4L2_PIX_FMT_NV12N) {
             if ((srcblendfmt == V4L2_PIX_FMT_RGB32))
             src_color_space = V4L2_PIX_FMT_NV12N_RGB32;
+#endif
     } else if (src_color_space == V4L2_PIX_FMT_NV12MT_16X16) {
             if ((srcblendfmt == V4L2_PIX_FMT_RGB32))
             src_color_space = V4L2_PIX_FMT_NV12MT_16X16_RGB32;

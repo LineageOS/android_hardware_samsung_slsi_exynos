@@ -80,11 +80,11 @@ int HAL_PIXEL_FORMAT_2_V4L2_PIX(
     case HAL_PIXEL_FORMAT_EXYNOS_YCbCr_420_P:
         v4l2_pixel_format = V4L2_PIX_FMT_YUV420;
         break;
-
+#ifdef V4L2_PIX_FMT_YUV420N
     case HAL_PIXEL_FORMAT_EXYNOS_YCbCr_420_PN:
         v4l2_pixel_format = V4L2_PIX_FMT_YUV420N;
         break;
-
+#endif
     case HAL_PIXEL_FORMAT_YCbCr_422_SP:
         v4l2_pixel_format = V4L2_PIX_FMT_NV16;
         break;
@@ -92,11 +92,11 @@ int HAL_PIXEL_FORMAT_2_V4L2_PIX(
     case HAL_PIXEL_FORMAT_EXYNOS_YCbCr_420_SP:
         v4l2_pixel_format = V4L2_PIX_FMT_NV12;
         break;
-
+#ifdef V4L2_PIX_FMT_NV12N
     case HAL_PIXEL_FORMAT_EXYNOS_YCbCr_420_SPN:
         v4l2_pixel_format = V4L2_PIX_FMT_NV12N;
         break;
-
+#endif
     case HAL_PIXEL_FORMAT_EXYNOS_YCbCr_420_SP_M:
     case HAL_PIXEL_FORMAT_EXYNOS_YCbCr_420_SP_M_PRIV:
     case HAL_PIXEL_FORMAT_EXYNOS_YCbCr_420_SP_M_S10B:
@@ -137,11 +137,11 @@ int HAL_PIXEL_FORMAT_2_V4L2_PIX(
 	v4l2_pixel_format = V4L2_PIX_FMT_NV12MT_16X16;
 #endif
 	break;
-
+#ifdef V4L2_PIX_FMT_NV12NT
    case HAL_PIXEL_FORMAT_EXYNOS_YCbCr_420_SPN_TILED:
         v4l2_pixel_format = V4L2_PIX_FMT_NV12NT;
         break;
-
+#endif
    case HAL_PIXEL_FORMAT_EXYNOS_YCrCb_422_I:
         v4l2_pixel_format = V4L2_PIX_FMT_YVYU;
         break;
@@ -184,11 +184,11 @@ int V4L2_PIX_2_HAL_PIXEL_FORMAT(
     case V4L2_PIX_FMT_YUV420:
         hal_pixel_format = HAL_PIXEL_FORMAT_EXYNOS_YCbCr_420_P;
 	break;
-
+#ifdef V4L2_PIX_FMT_YUV420N
     case V4L2_PIX_FMT_YUV420N:
         hal_pixel_format = HAL_PIXEL_FORMAT_EXYNOS_YCbCr_420_PN;
 	break;
-
+#endif
     case V4L2_PIX_FMT_YUV420M:
         hal_pixel_format = HAL_PIXEL_FORMAT_EXYNOS_YCbCr_420_P_M;
         break;
@@ -208,11 +208,11 @@ int V4L2_PIX_2_HAL_PIXEL_FORMAT(
     case V4L2_PIX_FMT_NV12:
         hal_pixel_format = HAL_PIXEL_FORMAT_EXYNOS_YCbCr_420_SP;
         break;
-
+#ifdef V4L2_PIX_FMT_NV12N
     case V4L2_PIX_FMT_NV12N:
         hal_pixel_format = HAL_PIXEL_FORMAT_EXYNOS_YCbCr_420_SPN;
         break;
-
+#endif
     case V4L2_PIX_FMT_NV12M:
         hal_pixel_format = HAL_PIXEL_FORMAT_EXYNOS_YCbCr_420_SP_M;
         break;
@@ -237,11 +237,11 @@ int V4L2_PIX_2_HAL_PIXEL_FORMAT(
     case V4L2_PIX_FMT_NV12MT_16X16:
         hal_pixel_format = HAL_PIXEL_FORMAT_EXYNOS_YCbCr_420_SP_M_TILED;
         break;
-
+#ifdef V4L2_PIX_FMT_NV12NT
     case V4L2_PIX_FMT_NV12NT:
         hal_pixel_format = HAL_PIXEL_FORMAT_EXYNOS_YCbCr_420_SPN_TILED;
         break;
-
+#endif
     case V4L2_PIX_FMT_NV61:
         hal_pixel_format = HAL_PIXEL_FORMAT_EXYNOS_YCrCb_422_SP;
         break;
@@ -377,11 +377,17 @@ int V4L2_PIX_2_YUV_INFO(unsigned int v4l2_pixel_format, unsigned int * bpp, unsi
     switch (v4l2_pixel_format) {
     case V4L2_PIX_FMT_NV12:
     case V4L2_PIX_FMT_NV21:
+#ifdef V4L2_PIX_FMT_NV12N
     case V4L2_PIX_FMT_NV12N:
+#endif
+#ifdef V4L2_PIX_FMT_NV12NT
     case V4L2_PIX_FMT_NV12NT:
+#endif
     case V4L2_PIX_FMT_YUV420:
     case V4L2_PIX_FMT_YVU420:
+#ifdef V4L2_PIX_FMT_YUV420N
     case V4L2_PIX_FMT_YUV420N:
+#endif
         *bpp    = 12;
         *planes = 1;
         break;
