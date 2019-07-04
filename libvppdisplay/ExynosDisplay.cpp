@@ -470,6 +470,15 @@ void ExynosDisplay::dupFence(int fence, hwc_display_contents_1_t *contents)
         if (layer.handle != NULL)
             handle = private_handle_t::dynamicCast(layer.handle);
 
+        /* If Fb is not needed and this is a HWC buffer (function reverse engineered from S7 libexynosdisplay.so) */
+        if(!mFbNeeded && layer.compositionType == HWC_FRAMEBUFFER_TARGET) {
+            /* Close the acquire fence Fd if it is valid */
+            if(layer.acquireFenceFd >= 0) {
+                close(layer.acquireFenceFd);
+                layer.acquireFenceFd = -1;
+            }
+        }
+
         if ((mVirtualOverlayFlag == true) && (layer.compositionType == HWC_OVERLAY) &&
                 ((handle != NULL) && (getDrmMode(handle->flags) == NO_DRM)) &&
                 (mFirstFb <= i) && (i <= mLastFb))
