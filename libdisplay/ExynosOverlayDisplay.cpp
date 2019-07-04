@@ -858,6 +858,18 @@ int ExynosOverlayDisplay::set(hwc_display_contents_1_t* contents)
 
     mHwc->hwc_ctrl.max_num_ovly = mAllowedOverlays;
 
+    for (size_t i = 0; i < contents->numHwLayers; i++) {
+        hwc_layer_1_t &layer = contents->hwLayers[i];
+        /* If Fb is not needed and this is a HWC buffer (function reverse engineered from S7 libexynosdisplay.so) */
+        if(!mFbNeeded && layer.compositionType == HWC_FRAMEBUFFER_TARGET) {
+            /* Close the acquire fence Fd if it is valid */
+            if(layer.acquireFenceFd >= 0) {
+                close(layer.acquireFenceFd);
+                layer.acquireFenceFd = -1;
+            }
+        }
+    }
+
     return err;
 }
 
