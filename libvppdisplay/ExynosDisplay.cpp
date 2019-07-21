@@ -427,7 +427,7 @@ int ExynosDisplay::set(hwc_display_contents_1_t *contents)
     if (mType != EXYNOS_SECONDARY_DISPLAY)
     {
 #endif
-    if (err)
+    if (err < 0)
         fence = clearDisplay();
 
     if (fence == 0) {
@@ -455,6 +455,19 @@ int ExynosDisplay::set(hwc_display_contents_1_t *contents)
 #if defined(USES_DUAL_DISPLAY)
     }
 #endif
+
+    uint32_t rectCount = 0;
+    for (size_t i = 0; i < contents->numHwLayers; i++) {
+        hwc_layer_1_t &layer = contents->hwLayers[i];
+        if (layer.handle) {
+            private_handle_t *handle = private_handle_t::dynamicCast(layer.handle);
+            if (handle->format == HAL_PIXEL_FORMAT_EXYNOS_YCbCr_420_SP_M_PRIV
+                    && rectCount < mOriginFrect.size())
+                layer.sourceCropf = mOriginFrect[rectCount++];
+        }
+    }
+    mOriginFrect.clear();
+    mBackUpFrect.clear();
 
     return err;
 }
@@ -2108,18 +2121,6 @@ int ExynosDisplay::postFrame(hwc_display_contents_1_t* contents)
         layer.acquireFenceFd = -1;
         layer.releaseFenceFd = -1;
     }
-    rectCount = 0;
-    for (size_t i = 0; i < contents->numHwLayers; i++) {
-        hwc_layer_1_t &layer = contents->hwLayers[i];
-        if (layer.handle) {
-            private_handle_t *handle = private_handle_t::dynamicCast(layer.handle);
-            if (handle->format == HAL_PIXEL_FORMAT_EXYNOS_YCbCr_420_SP_M_PRIV
-                    && rectCount < mOriginFrect.size())
-                layer.sourceCropf = mOriginFrect[rectCount++];
-        }
-    }
-    mOriginFrect.clear();
-    mBackUpFrect.clear();
 
     if (!this->mVirtualOverlayFlag && (ret >= 0))
         this->mLastFbWindow = mFbWindow;
