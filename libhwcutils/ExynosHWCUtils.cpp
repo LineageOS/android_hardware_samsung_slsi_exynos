@@ -72,7 +72,7 @@ void dumpMPPImage(exynos_mpp_img &c)
     ALOGV("\tx = %u, y = %u, w = %u, h = %u, fw = %u, fh = %u",
             c.x, c.y, c.w, c.h, c.fw, c.fh);
     ALOGV("\tf = %u", c.format);
-    ALOGV("\taddr = {%d, %d, %d}, rot = %u, cacheable = %u, drmMode = %u",
+    ALOGV("\taddr = {%lu, %lu, %lu}, rot = %u, cacheable = %u, drmMode = %u",
             c.yaddr, c.uaddr, c.vaddr, c.rot, c.cacheable, c.drmMode);
     ALOGV("\tnarrowRgb = %u, acquireFenceFd = %d, releaseFenceFd = %d, mem_type = %u",
             c.narrowRgb, c.acquireFenceFd, c.releaseFenceFd, c.mem_type);
@@ -83,7 +83,7 @@ void dumpMPPImage(uint32_t type, exynos_mpp_img &c)
     HDEBUGLOGD(type, "\tx = %u, y = %u, w = %u, h = %u, fw = %u, fh = %u",
             c.x, c.y, c.w, c.h, c.fw, c.fh);
     HDEBUGLOGD(type, "\tf = %u", c.format);
-    HDEBUGLOGD(type, "\taddr = {%d, %d, %d}, rot = %u, cacheable = %u, drmMode = %u",
+    HDEBUGLOGD(type, "\taddr = {%lu, %lu, %lu}, rot = %u, cacheable = %u, drmMode = %u",
             c.yaddr, c.uaddr, c.vaddr, c.rot, c.cacheable, c.drmMode);
     HDEBUGLOGD(type, "\tnarrowRgb = %u, acquireFenceFd = %d, releaseFenceFd = %d, mem_type = %u",
             c.narrowRgb, c.acquireFenceFd, c.releaseFenceFd, c.mem_type);
@@ -296,9 +296,6 @@ bool compareYuvLayerConfig(int videoLayers, uint32_t index,
         video_layer_config *pre_src_data, video_layer_config *pre_dst_data)
 {
     private_handle_t *src_handle = private_handle_t::dynamicCast(layer.handle);
-    buffer_handle_t dst_buf;
-    private_handle_t *dst_handle;
-    int ret = 0;
     bool reconfigure = 1;
 
     video_layer_config new_src_cfg, new_dst_cfg;
@@ -457,36 +454,4 @@ void adjustRect(hwc_rect_t &rect, int32_t width, int32_t height)
         rect.bottom = rect.top;
     if (rect.bottom > height)
         rect.bottom = height;
-}
-
-uint32_t halDataSpaceToV4L2ColorSpace(uint32_t data_space)
-{
-    switch (data_space) {
-    case HAL_DATASPACE_BT2020:
-    case HAL_DATASPACE_BT2020_FULL:
-        return V4L2_COLORSPACE_BT2020;
-    case HAL_DATASPACE_DCI_P3:
-    case HAL_DATASPACE_DCI_P3_FULL:
-        return V4L2_COLORSPACE_DCI_P3;
-    default:
-        return V4L2_COLORSPACE_DEFAULT;
-    }
-    return V4L2_COLORSPACE_DEFAULT;
-}
-
-unsigned int isNarrowRgb(int format, uint32_t data_space)
-{
-    if (format == HAL_PIXEL_FORMAT_EXYNOS_YCrCb_420_SP_M_FULL)
-        return 0;
-    else {
-        if (isFormatRgb(format))
-            return 0;
-        else {
-            if ((data_space == HAL_DATASPACE_BT2020_FULL) ||
-                (data_space == HAL_DATASPACE_DCI_P3_FULL))
-                return 0;
-            else
-                return 1;
-        }
-    }
 }
