@@ -171,7 +171,6 @@ const size_t NO_FB_NEEDED = NUM_HW_WINDOWS + 1;
 
 #ifndef FIMD_BW_OVERLAP_CHECK
 const size_t MAX_NUM_FIMD_DMA_CH = 2;
-#else
 const int FIMD_DMA_CH_IDX[S3C_FB_MAX_WIN] = {0, 1, 1, 1, 0};
 #endif
 

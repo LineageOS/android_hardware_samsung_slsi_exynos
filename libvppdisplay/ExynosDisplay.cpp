@@ -2642,7 +2642,11 @@ void ExynosDisplay::determineBandwidthSupport(hwc_display_contents_1_t *contents
                     supportedInternalMPP->mState = MPP_STATE_ASSIGNED;
                     mLayerInfos[fbIndex]->mInternalMPP = supportedInternalMPP;
                     mLayerInfos[fbIndex]->mDmaType = getDeconDMAType(mLayerInfos[fbIndex]->mInternalMPP);
+#if defined(MAX_DECON_DMA_TYPE)
                     if (mLayerInfos[fbIndex]->mDmaType >= MAX_DECON_DMA_TYPE) {
+#else
+                    if (mLayerInfos[fbIndex]->mDmaType >= IDMA_MAX) {
+#endif
                         ALOGE("getDeconDMAType with InternalMPP for FramebufferTarget failed (MPP type: %d, MPP index: %d)",
                                 mLayerInfos[fbIndex]->mInternalMPP->mType, mLayerInfos[fbIndex]->mInternalMPP->mIndex);
                         mLayerInfos[fbIndex]->mDmaType = 0;
@@ -3410,5 +3414,9 @@ int ExynosDisplay::checkConfigValidation(decon_win_config *config)
 
 int ExynosDisplay::setPowerMode(int mode)
 {
+#if defined(S3CFB_POWER_MODE)
     return ioctl(this->mDisplayFd, S3CFB_POWER_MODE, &mode);
+#else
+    return ioctl(this->mDisplayFd, FBIOBLANK, (mode == HWC_POWER_MODE_OFF ? FB_BLANK_POWERDOWN : FB_BLANK_UNBLANK));
+#endif
 }

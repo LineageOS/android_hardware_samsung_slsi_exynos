@@ -699,7 +699,6 @@ void *hwc_vsync_thread(void *data)
 int exynos5_blank(struct hwc_composer_device_1 *dev, int disp, int blank)
 {
     ATRACE_CALL();
-    int fence = 0;
     struct exynos5_hwc_composer_device_1_t *pdev =
             (struct exynos5_hwc_composer_device_1_t *)dev;
 #ifdef SKIP_DISPLAY_BLANK_CTRL
@@ -1042,7 +1041,7 @@ int exynos_setActiveConfig(struct hwc_composer_device_1* dev, int disp, int inde
     return -1;
 }
 
-int exynos_setCursorPositionAsync(struct hwc_composer_device_1 *dev, int disp, int x_pos, int y_pos)
+int exynos_setCursorPositionAsync(struct hwc_composer_device_1 *dev __unused, int disp __unused, int x_pos __unused, int y_pos __unused)
 {
     return 0;
 }
@@ -1050,7 +1049,6 @@ int exynos_setCursorPositionAsync(struct hwc_composer_device_1 *dev, int disp, i
 int exynos_setPowerMode(struct hwc_composer_device_1* dev, int disp, int mode)
 {
     ATRACE_CALL();
-    int fence = 0;
     struct exynos5_hwc_composer_device_1_t *pdev =
             (struct exynos5_hwc_composer_device_1_t *)dev;
 #ifdef SKIP_DISPLAY_BLANK_CTRL
@@ -1195,7 +1193,6 @@ int exynos5_open(const struct hw_module_t *module, const char *name,
 {
     int ret = 0;
     int refreshRate;
-    int sw_fd;
 
     if (strcmp(name, HWC_HARDWARE_COMPOSER)) {
         return -EINVAL;
@@ -1569,19 +1566,19 @@ int exynos5_close(hw_device_t *device)
 }
 
 static struct hw_module_methods_t exynos5_hwc_module_methods = {
-    open: exynos5_open,
+    .open = exynos5_open,
 };
 
 hwc_module_t HAL_MODULE_INFO_SYM = {
-    common: {
-        tag: HARDWARE_MODULE_TAG,
-        module_api_version: HWC_MODULE_API_VERSION_0_1,
-        hal_api_version: HARDWARE_HAL_API_VERSION,
-        id: HWC_HARDWARE_MODULE_ID,
-        name: "Samsung exynos5 hwcomposer module",
-        author: "Samsung LSI",
-        methods: &exynos5_hwc_module_methods,
-        dso: 0,
-        reserved: {0},
+    .common = {
+        .tag = HARDWARE_MODULE_TAG,
+        .module_api_version = HWC_MODULE_API_VERSION_0_1,
+        .hal_api_version = HARDWARE_HAL_API_VERSION,
+        .id = HWC_HARDWARE_MODULE_ID,
+        .name = "Samsung exynos5 hwcomposer module",
+        .author = "Samsung LSI",
+        .methods = &exynos5_hwc_module_methods,
+        .dso = 0,
+        .reserved = {0},
     }
 };
