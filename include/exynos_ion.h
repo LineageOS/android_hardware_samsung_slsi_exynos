@@ -17,7 +17,9 @@
 #ifndef _LIB_ION_H_
 #define _LIB_ION_H_
 
+#ifndef ION_HEAP_SYSTEM_MASK
 #define ION_HEAP_SYSTEM_MASK            (1 << 0)
+#endif
 #define ION_HEAP_EXYNOS_CONTIG_MASK     (1 << 4)
 #define ION_EXYNOS_VIDEO_EXT_MASK       (1 << 31)
 #define ION_EXYNOS_VIDEO_EXT2_MASK      (1 << 29)

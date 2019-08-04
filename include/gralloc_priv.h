@@ -115,8 +115,11 @@ struct private_handle_t {
 
     private_handle_t(int fd, int size, int flags) :
         fd(fd), fd1(-1), fd2(-1), magic(sMagic), flags(flags), size(size),
-        offset(0), format(0), internal_format(0), frameworkFormat(0), width(0), height(0), stride(0),
-        vstride(0), is_compressible(0), compressed_out(0), handle(0), handle1(0), handle2(0), base(0), base1(0), base2(0), prefer_compression(PREFER_COMPRESSION_NO_CHANGE), dssRatio(0)
+        offset(0), format(0), width(0), height(0), stride(0), vstride(0), frameworkFormat(0),
+        handle(0), handle1(0), handle2(0), base(0), base1(0), base2(0), 
+        dssRatio(0), prefer_compression(PREFER_COMPRESSION_NO_CHANGE),
+        internal_format(0), is_compressible(0), compressed_out(0)
+
     {
         version = sizeof(native_handle);
         numInts = sNumInts() + 2;
@@ -126,8 +129,11 @@ struct private_handle_t {
     private_handle_t(int fd, int size, int flags, int w,
                     int h, int format, uint64_t internal_format, int frameworkFormat, int stride, int vstride, int is_compressible) :
         fd(fd), fd1(-1), fd2(-1), magic(sMagic), flags(flags), size(size),
-        offset(0), format(format), internal_format(internal_format), frameworkFormat(frameworkFormat), width(w), height(h), stride(stride),
-        vstride(vstride), is_compressible(is_compressible), compressed_out(0), handle(0), handle1(0), handle2(0), base(0), base1(0), base2(0), prefer_compression(PREFER_COMPRESSION_NO_CHANGE), dssRatio(0)
+        offset(0), format(format), width(w), height(h), stride(stride), vstride(vstride), frameworkFormat(frameworkFormat),
+        handle(0), handle1(0), handle2(0), base(0), base1(0), base2(0), 
+        dssRatio(0), prefer_compression(PREFER_COMPRESSION_NO_CHANGE),
+        internal_format(internal_format), is_compressible(is_compressible), compressed_out(0)
+
     {
         version = sizeof(native_handle);
         numInts = sNumInts() + 2;
@@ -137,8 +143,11 @@ struct private_handle_t {
     private_handle_t(int fd, int fd1, int size, int flags, int w,
                     int h, int format, uint64_t internal_format, int frameworkFormat, int stride, int vstride, int is_compressible) :
         fd(fd), fd1(fd1), fd2(-1), magic(sMagic), flags(flags), size(size),
-        offset(0), format(format), internal_format(internal_format), frameworkFormat(frameworkFormat), width(w), height(h), stride(stride),
-        vstride(vstride), is_compressible(is_compressible), compressed_out(0), handle(0), handle1(0), handle2(0), base(0), base1(0), base2(0), prefer_compression(PREFER_COMPRESSION_NO_CHANGE), dssRatio(0)
+        offset(0), format(format), width(w), height(h), stride(stride), vstride(vstride), frameworkFormat(frameworkFormat),
+        handle(0), handle1(0), handle2(0), base(0), base1(0), base2(0), 
+        dssRatio(0), prefer_compression(PREFER_COMPRESSION_NO_CHANGE),
+        internal_format(internal_format), is_compressible(is_compressible), compressed_out(0)
+
     {
         version = sizeof(native_handle);
         numInts = sNumInts() + 1;
@@ -148,8 +157,11 @@ struct private_handle_t {
     private_handle_t(int fd, int fd1, int fd2, int size, int flags, int w,
                     int h, int format, uint64_t internal_format, int frameworkFormat, int stride, int vstride, int is_compressible) :
         fd(fd), fd1(fd1), fd2(fd2), magic(sMagic), flags(flags), size(size),
-        offset(0), format(format), internal_format(internal_format), frameworkFormat(frameworkFormat), width(w), height(h), stride(stride),
-        vstride(vstride), is_compressible(is_compressible), compressed_out(0), handle(0), handle1(0), handle2(0), base(0), base1(0), base2(0), prefer_compression(PREFER_COMPRESSION_NO_CHANGE), dssRatio(0)
+        offset(0), format(format), width(w), height(h), stride(stride), vstride(vstride), frameworkFormat(frameworkFormat),
+        handle(0), handle1(0), handle2(0), base(0), base1(0), base2(0), 
+        dssRatio(0), prefer_compression(PREFER_COMPRESSION_NO_CHANGE),
+        internal_format(internal_format), is_compressible(is_compressible), compressed_out(0)
+
     {
         version = sizeof(native_handle);
         numInts = sNumInts();

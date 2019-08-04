@@ -66,24 +66,14 @@ struct fb_context_t {
 
 /*****************************************************************************/
 
-static int fb_setSwapInterval(struct framebuffer_device_t* dev,
-                              int interval)
-{
-    fb_context_t* ctx = (fb_context_t*)dev;
-    if (interval < dev->minSwapInterval || interval > dev->maxSwapInterval)
-        return -EINVAL;
-    // FIXME: implement fb_setSwapInterval
-    return 0;
-}
-
 static int fb_post(struct framebuffer_device_t* dev, buffer_handle_t buffer)
 {
     if (private_handle_t::validate(buffer) < 0)
         return -EINVAL;
 
-    private_handle_t const* hnd = reinterpret_cast<private_handle_t const*>(buffer);
     private_module_t* m = reinterpret_cast<private_module_t*>(dev->common.module);
 #if HWC_EXIST
+    private_handle_t const* hnd = reinterpret_cast<private_handle_t const*>(buffer);
     hwc_callback_queue_t *queue = reinterpret_cast<hwc_callback_queue_t *>(m->queue);
     pthread_mutex_lock(&m->queue_lock);
     if(queue->isEmpty())
@@ -132,14 +122,7 @@ static int fb_close(struct hw_device_t *dev)
 
 int init_fb(struct private_module_t* module)
 {
-    char const * const device_template[] = {
-        "/dev/graphics/fb%u",
-        "/dev/fb%u",
-        NULL
-    };
-
     int fd = -1;
-    int i = 0;
 
     fd = open("/dev/graphics/fb0", O_RDWR);
     if (fd < 0) {
@@ -212,7 +195,7 @@ int init_fb(struct private_module_t* module)
     return 0;
 }
 
-int fb_device_open(hw_module_t const* module, const char* name,
+int fb_device_open(hw_module_t const* module, const char* name __unused,
                    hw_device_t** device)
 {
     int status = -EINVAL;

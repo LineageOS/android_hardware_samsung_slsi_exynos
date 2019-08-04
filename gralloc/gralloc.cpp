@@ -64,9 +64,6 @@ struct gralloc_context_t {
     /* our private data here */
 };
 
-static int gralloc_alloc_buffer(alloc_device_t* dev,
-                                size_t size, int usage, buffer_handle_t* pHandle);
-
 /*****************************************************************************/
 
 int fb_device_open(const hw_module_t* module, const char* name,
@@ -103,37 +100,37 @@ extern bool gralloc_crc_allocation_check(int format, int width, int height, int 
 /*****************************************************************************/
 
 static struct hw_module_methods_t gralloc_module_methods = {
-open: gralloc_device_open
+    .open = gralloc_device_open
 };
 
 /* version_major is for module_api_verison
  * lock_ycbcr is for MODULE_API_VERSION_0_2
  */
 struct private_module_t HAL_MODULE_INFO_SYM = {
-base: {
-    common: {
-        tag: HARDWARE_MODULE_TAG,
-        module_api_version: GRALLOC_MODULE_API_VERSION_0_2,
-        hal_api_version: 0,
-        id: GRALLOC_HARDWARE_MODULE_ID,
-        name: "Graphics Memory Allocator Module",
-        author: "The Android Open Source Project",
-        methods: &gralloc_module_methods
+    .base = {
+        .common = {
+            .tag = HARDWARE_MODULE_TAG,
+            .module_api_version = GRALLOC_MODULE_API_VERSION_0_2,
+            .hal_api_version = 0,
+            .id = GRALLOC_HARDWARE_MODULE_ID,
+            .name = "Graphics Memory Allocator Module",
+            .author = "The Android Open Source Project",
+            .methods = &gralloc_module_methods
+        },
+        .registerBuffer = gralloc_register_buffer,
+        .unregisterBuffer = gralloc_unregister_buffer,
+        .lock = gralloc_lock,
+        .unlock = gralloc_unlock,
+        .perform = NULL,
+        .lock_ycbcr = gralloc_lock_ycbcr,
     },
-    registerBuffer: gralloc_register_buffer,
-    unregisterBuffer: gralloc_unregister_buffer,
-    lock: gralloc_lock,
-    unlock: gralloc_unlock,
-    perform: NULL,
-    lock_ycbcr: gralloc_lock_ycbcr,
-},
-framebuffer: 0,
-flags: 0,
-numBuffers: 0,
-bufferMask: 0,
-lock: PTHREAD_MUTEX_INITIALIZER,
-currentBuffer: 0,
-ionfd: -1,
+    .framebuffer = 0,
+    .flags = 0,
+    .numBuffers = 0,
+    .bufferMask = 0,
+    .lock = PTHREAD_MUTEX_INITIALIZER,
+    .currentBuffer = 0,
+    .ionfd = -1,
 };
 
 /*****************************************************************************/
@@ -219,7 +216,7 @@ static int gralloc_alloc_rgb(int ionfd, int w, int h, int format, int usage,
             int h_aligned = ALIGN( h, AFBC_PIXELS_PER_BLOCK );
             int nblocks = w / AFBC_PIXELS_PER_BLOCK * h_aligned / AFBC_PIXELS_PER_BLOCK;
 
-            if ( size != NULL )
+            if ( size )
             {
                 size = w * h_aligned * bpp +
                     ALIGN( nblocks * AFBC_HEADER_BUFFER_BYTES_PER_BLOCKENTRY, AFBC_BODY_BUFFER_BYTE_ALIGNMENT );
@@ -498,8 +495,6 @@ static int gralloc_alloc(alloc_device_t* dev,
         ion_flags |= ION_FLAG_NOZEROED;
 
     private_module_t* m = reinterpret_cast<private_module_t*>
-        (dev->common.module);
-    gralloc_module_t* module = reinterpret_cast<gralloc_module_t*>
         (dev->common.module);
 
     err = gralloc_alloc_rgb(m->ionfd, w, h, format, usage, ion_flags, &hnd,
