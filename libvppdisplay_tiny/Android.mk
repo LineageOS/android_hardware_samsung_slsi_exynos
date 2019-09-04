@@ -37,7 +37,7 @@ LOCAL_SRC_FILES := \
 	ExynosPrimaryDisplay.cpp
 
 
-LOCAL_MODULE_TAGS := eng
+LOCAL_MODULE_TAGS :=
 LOCAL_MODULE := libdisplay
 
 include $(TOP)/hardware/samsung_slsi/exynos/BoardConfigCFlags.mk

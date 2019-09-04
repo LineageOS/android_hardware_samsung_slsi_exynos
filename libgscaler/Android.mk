@@ -36,7 +36,7 @@ LOCAL_SRC_FILES := \
 	libgscaler_obj.cpp \
 	libgscaler.cpp
 
-LOCAL_MODULE_TAGS := eng
+LOCAL_MODULE_TAGS :=
 LOCAL_MODULE := libexynosgscaler
 
 include $(TOP)/hardware/samsung_slsi/exynos/BoardConfigCFlags.mk

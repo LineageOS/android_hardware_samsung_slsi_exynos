@@ -36,7 +36,7 @@ LOCAL_SHARED_LIBRARIES := \
 
 LOCAL_MODULE := libexynosv4l2
 LOCAL_PRELINK_MODULE := false
-LOCAL_MODULE_TAGS := eng
+LOCAL_MODULE_TAGS :=
 
 include $(TOP)/hardware/samsung_slsi/exynos/BoardConfigCFlags.mk
 include $(BUILD_SHARED_LIBRARY)

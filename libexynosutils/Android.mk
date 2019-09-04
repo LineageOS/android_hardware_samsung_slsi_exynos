@@ -27,7 +27,7 @@ LOCAL_C_INCLUDES += framework/base/include
 LOCAL_SRC_FILES := ExynosMutex.cpp \
 		   Exynos_log.c
 
-LOCAL_MODULE_TAGS := eng
+LOCAL_MODULE_TAGS :=
 LOCAL_MODULE := libexynosutils
 
 LOCAL_SRC_FILES += exynos_format_v4l2.c

@@ -38,7 +38,7 @@ LOCAL_CFLAGS += -DSCALER_USE_LOCAL_CID
 LOCAL_CFLAGS += -DSCALER_USE_PREMUL_FMT
 endif
 
-LOCAL_MODULE_TAGS := eng
+LOCAL_MODULE_TAGS :=
 LOCAL_MODULE := libexynosscaler
 
 include $(TOP)/hardware/samsung_slsi/exynos/BoardConfigCFlags.mk

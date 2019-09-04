@@ -40,7 +40,7 @@ LOCAL_SRC_FILES := \
 
 include $(TOP)/hardware/samsung_slsi/$(TARGET_SOC)/libhdmimodule/Android.mk
 
-LOCAL_MODULE_TAGS := eng
+LOCAL_MODULE_TAGS :=
 LOCAL_MODULE := libhdmi
 
 include $(TOP)/hardware/samsung_slsi/exynos/BoardConfigCFlags.mk
