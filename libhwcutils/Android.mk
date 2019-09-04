@@ -102,7 +102,6 @@ endif
 
 include $(TOP)/hardware/samsung_slsi/$(TARGET_SOC)/libhwcutilsmodule/Android.mk
 
-LOCAL_MODULE_TAGS := eng
 LOCAL_MODULE := libhwcutils
 
 include $(TOP)/hardware/samsung_slsi/exynos/BoardConfigCFlags.mk

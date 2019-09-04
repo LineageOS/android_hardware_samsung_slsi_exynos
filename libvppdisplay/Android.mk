@@ -70,7 +70,6 @@ endif
 
 include $(TOP)/hardware/samsung_slsi/$(TARGET_SOC)/libdisplaymodule/Android.mk
 
-LOCAL_MODULE_TAGS := eng
 LOCAL_MODULE := libexynosdisplay
 
 include $(TOP)/hardware/samsung_slsi/exynos/BoardConfigCFlags.mk

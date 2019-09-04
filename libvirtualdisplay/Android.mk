@@ -45,7 +45,6 @@ LOCAL_SRC_FILES := \
 
 include $(TOP)/hardware/samsung_slsi/$(TARGET_SOC)/libvirtualdisplaymodule/Android.mk
 
-LOCAL_MODULE_TAGS := eng
 LOCAL_MODULE := libvirtualdisplay
 
 include $(TOP)/hardware/samsung_slsi/exynos/BoardConfigCFlags.mk
