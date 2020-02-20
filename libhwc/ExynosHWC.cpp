@@ -734,10 +734,13 @@ int exynos5_blank(struct hwc_composer_device_1 *dev, int disp, int blank)
 #endif
         pdev->primaryDisplay->mBlanked = !!blank;
 
-        if (pthread_kill(pdev->update_stat_thread, 0) != ESRCH) { //check if the thread is alive
-           if (fb_blank == FB_BLANK_POWERDOWN) {
-                pdev->update_stat_thread_flag = false;
-                pthread_join(pdev->update_stat_thread, 0);
+        /* Check if the thread is enabled before calling pthread_kill as we will seg fault otherwise */
+        if(pdev->update_stat_thread_flag == true) {
+            if (pthread_kill(pdev->update_stat_thread, 0) != ESRCH) { //check if the thread is alive
+               if (fb_blank == FB_BLANK_POWERDOWN) {
+                    pdev->update_stat_thread_flag = false;
+                    pthread_join(pdev->update_stat_thread, 0);
+                }
             }
         } else { // thread is not alive
             if (fb_blank == FB_BLANK_UNBLANK && pdev->hwc_ctrl.dynamic_recomp_mode == true)
@@ -1111,10 +1114,13 @@ int exynos_setPowerMode(struct hwc_composer_device_1* dev, int disp, int mode)
 #endif
         pdev->primaryDisplay->mBlanked = !!blank;
 
-        if (pthread_kill(pdev->update_stat_thread, 0) != ESRCH) { //check if the thread is alive
-           if (fb_blank == FB_BLANK_POWERDOWN) {
-                pdev->update_stat_thread_flag = false;
-                pthread_join(pdev->update_stat_thread, 0);
+        /* Check if the thread is enabled before calling pthread_kill as we will seg fault otherwise */
+        if(pdev->update_stat_thread_flag == true) {
+            if (pthread_kill(pdev->update_stat_thread, 0) != ESRCH) { //check if the thread is alive
+               if (fb_blank == FB_BLANK_POWERDOWN) {
+                    pdev->update_stat_thread_flag = false;
+                    pthread_join(pdev->update_stat_thread, 0);
+                }
             }
         } else { // thread is not alive
             if (fb_blank == FB_BLANK_UNBLANK && pdev->hwc_ctrl.dynamic_recomp_mode == true)
