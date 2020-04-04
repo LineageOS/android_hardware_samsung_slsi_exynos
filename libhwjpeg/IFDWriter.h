@@ -26,14 +26,14 @@ public:
     operator bool() { return __little; }
 };
 
-extern CEndianessChecker __LITTLE_ENDIAN__;
+extern CEndianessChecker __LITTLE_ENDIAN_HWJPEG__;
 
 template <typename T>
 char *WriteDataInBig(char *p, T val)
 {
     if (sizeof(val) == 1) {
         *p++ = val;
-    } else if (__LITTLE_ENDIAN__) {
+    } else if (__LITTLE_ENDIAN_HWJPEG__) {
         switch (sizeof(val)) {
             case 2:
                 *p++ = static_cast<char>((val >> 8) & 0xFF);

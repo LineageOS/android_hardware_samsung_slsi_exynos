@@ -113,7 +113,7 @@ public:
     virtual int create(void) { return flagCreate(); }
     virtual int destroy(void) { return 0; }
     int updateConfig(void) { return 0; }
-    int setCache(int val) { val = val; return 0; }
+    int setCache(int val __unused) { return 0; }
 
     void *getJpegConfig() { return reinterpret_cast<void *>(this); }
     int setJpegConfig(void* pConfig);

@@ -211,7 +211,7 @@ public:
      * @return: true if the given quantization tables are configured successfully.
      *          false, otherwise.
      */
-    virtual bool SetQuality(const unsigned char qtable[]) { return false; };
+    virtual bool SetQuality(const unsigned char qtable[] __unused) { return false; };
     /*
      * SetImageBuffer - Configure the uncompressed primary image buffers (userptr)
      * @buffers[in]     : addresses of the buffers
@@ -238,7 +238,7 @@ public:
      * @return          : true if buffer configuration is successful.
      *                    false, otherwise.
      */
-    virtual bool SetImageBuffer2(char *buffers[], size_t len_buffers[], unsigned int num_buffers) { return false; }
+    virtual bool SetImageBuffer2(char *buffers[] __unused, size_t len_buffers[] __unused, unsigned int num_buffers __unused) { return false; }
     /*
      * SetImageBuffer2 - Configure the uncompressed secondary image buffers (dmabuf)
      * @buffers[in]     : file descriptors of the buffers exported by dma-buf
@@ -247,7 +247,7 @@ public:
      * @return          : true if buffer configuration is successful.
      *                    false, otherwise.
      */
-    virtual bool SetImageBuffer2(int buffers[], size_t len_buffers[], unsigned int num_buffers) { return false; }
+    virtual bool SetImageBuffer2(int buffers[] __unused, size_t len_buffers[] __unused, unsigned int num_buffers __unused) { return false; }
     /*
      * SetJpegBuffer - Configure the buffer of JPEG stream of the primary image (userptr)
      * @buffer [in]     : The address of the buffer
@@ -273,7 +273,7 @@ public:
      * The secondary image configuration is ignored if the secondary image size
      * is not configured with SetImageSize().
      */
-    virtual bool SetJpegBuffer2(char *buffer, size_t len_buffer) { return false; }
+    virtual bool SetJpegBuffer2(char *buffer __unused, size_t len_buffer __unused) { return false; }
     /*
      * SetJpegBuffer2 - Configure the buffer of JPEG stream of the secondary image (dmabuf)
      * @buffer [in]     : The file descriptor of the buffer exported by dma-buf
@@ -283,7 +283,7 @@ public:
      * The secondary image configuration is ignored if the secondary image size
      * is not configured with SetImageSize().
      */
-    virtual bool SetJpegBuffer2(int buffer, size_t len_buffer) { return false; }
+    virtual bool SetJpegBuffer2(int buffer __unused, size_t len_buffer __unused) { return false; }
     /*
      * Compress - Compress the given image
      * secondary_stream_size[out] : The size of secondary JPEG stream
@@ -320,7 +320,7 @@ public:
      * DEPREDCATED. DO NOT USE THIS FUNCTION.
      * This function is just provided to support the legacy ExynosJpegEncoder API.
      */
-    virtual bool GetImageBuffers(int buffers[], size_t len_buffers[], unsigned int num_buffers) { return false; }
+    virtual bool GetImageBuffers(int buffers[] __unused, size_t len_buffers[] __unused, unsigned int num_buffers __unused) { return false; }
     /*
      * GetImageBuffers - Retrieve the configured uncompressed image buffer information (userptr)
      * @buffers[out]: The addresses of the buffers
@@ -331,7 +331,7 @@ public:
      * DEPREDCATED. DO NOT USE THIS FUNCTION.
      * This function is just provided to support the legacy ExynosJpegEncoder API.
      */
-    virtual bool GetImageBuffers(char *buffers[], size_t len_buffers[], unsigned int num_buffers) { return false; }
+    virtual bool GetImageBuffers(char *buffers[] __unused, size_t len_buffers[] __unused, unsigned int num_buffers __unused) { return false; }
     /*
      * GetJpegBuffers - Retrieve the configured JPEG stream image buffer information (dmabuf)
      * @buffers[out]: The file descriptor of the buffer exported by dma-buf
@@ -341,7 +341,7 @@ public:
      * DEPREDCATED. DO NOT USE THIS FUNCTION.
      * This function is just provided to support the legacy ExynosJpegEncoder API.
      */
-    virtual bool GetJpegBuffer(int *buffers, size_t *len_buffer) { return false; }
+    virtual bool GetJpegBuffer(int *buffers __unused, size_t *len_buffer __unused) { return false; }
     /*
      * GetJpegBuffers - Retrieve the configured JPEG stream buffer information (userptr)
      * @buffers[out]: The address of the buffer
@@ -351,7 +351,7 @@ public:
      * DEPREDCATED. DO NOT USE THIS FUNCTION.
      * This function is just provided to support the legacy ExynosJpegEncoder API.
      */
-    virtual bool GetJpegBuffer(char **buffers, size_t *len_buffer) { return false; }
+    virtual bool GetJpegBuffer(char **buffers __unused, size_t *len_buffer __unused) { return false; }
     /*
      * Release - release the buffers acquired by CHWJpegCompressor
      */
@@ -422,7 +422,7 @@ public:
      * @width[in] : The number of horizontal pixels of the compressed image
      * @height[in] : The number of vertical pixels of the compressed image
      */
-    virtual bool SetStreamPixelSize(unsigned int width, unsigned int height) { return true; }
+    virtual bool SetStreamPixelSize(unsigned int width __unused, unsigned int height __unused) { return true; }
 
     /*
      * SetChromaSampFactor - Configure the chroma subsampling factor for JPEG stream
@@ -439,7 +439,7 @@ public:
      * If it is required to specify chroma subsampling factors separately, you should
      * override SetChromaSampFactor().
      */
-    virtual bool SetChromaSampFactor(unsigned int horizontal, unsigned int vertical) { return true; }
+    virtual bool SetChromaSampFactor(unsigned int horizontal __unused, unsigned int vertical __unused) { return true; }
 
     /*
      * SetDQT - Configure the address of DQT
@@ -451,7 +451,7 @@ public:
      * capabilities, the HWJPEG needs DQT separately. Therefore every subcalss
      * will need to override SetDQT().
      */
-    virtual bool SetDQT(const char *dqt) { return true; }
+    virtual bool SetDQT(const char *dqt __unused) { return true; }
 
     /*
      * SetDHT - Configure the address of DHT
@@ -463,7 +463,7 @@ public:
      * capabilities, the HWJPEG needs DHT separately. Therefore every subcalss
      * will need to override SetDHT().
      */
-    virtual bool SetDHT(const char *dht) { return true; }
+    virtual bool SetDHT(const char *dht __unused) { return true; }
 
     /*
      * Decompress - Decompress the given JPEG stream

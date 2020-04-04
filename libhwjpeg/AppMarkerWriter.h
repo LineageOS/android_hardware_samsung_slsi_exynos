@@ -19,7 +19,7 @@
 
 #include <ExynosExif.h>
 
-#define JPEG_MAX_SEGMENT_SIZE ((1 << 16) - 1)
+#define JPEG_MAX_SEGMENT_SIZE ((1 << 16) - 1 - 100)
 #define JPEG_MARKER_SIZE 2
 #define JPEG_SEGMENT_LENFIELD_SIZE 2
 
@@ -59,8 +59,8 @@ class CAppMarkerWriter {
     uint32_t m_szMake;
     uint32_t m_szSoftware;
     uint32_t m_szModel;
-    uint32_t m_szDateTime;
-    uint32_t m_szSubsecTime;
+    uint32_t m_szDateTime __unused;
+    uint32_t m_szSubsecTime __unused;
     uint32_t m_szUniqueID;
 
     char *m_pMainBase;

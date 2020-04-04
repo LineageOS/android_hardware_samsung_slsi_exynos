@@ -48,7 +48,6 @@ class ExynosJpegEncoderForCamera: public ExynosJpegEncoder {
 
     int m_nThumbWidth;
     int m_nThumbHeight;
-    int m_nMainQuality;
     int m_nThumbQuality;
 
     int m_iHWScalerID;

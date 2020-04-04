@@ -23,7 +23,7 @@ static const char ExifAsciiPrefix[] = { 'A', 'S', 'C', 'I', 'I', 0x0, 0x0, 0x0 }
 static const char ExifIdentifierCode[6] = { 'E', 'x', 'i', 'f', 0x00, 0x00 };
 static char TiffHeader[8] = { 'I', 'I', 0x2A, 0x00, 0x08, 0x00, 0x00, 0x00 };
 
-CEndianessChecker __LITTLE_ENDIAN__;
+CEndianessChecker __LITTLE_ENDIAN_HWJPEG__;
 
 CEndianessChecker::CEndianessChecker()
 {
@@ -495,7 +495,6 @@ static inline size_t GetSegLen(char *p)
 
 static inline size_t GetExtraAPPSize(debug_attribute_t *debug, unsigned int *appid_bits)
 {
-    int apps = debug->num_of_appmarker;
     size_t len = 0;
 
     for (int idx = 0; idx < debug->num_of_appmarker; idx++) {

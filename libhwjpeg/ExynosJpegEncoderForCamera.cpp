@@ -238,7 +238,6 @@ bool ExynosJpegEncoderForCamera::ProcessExif(char *base, size_t limit,
             return false;
         }
 
-        bool copy_exif = false;
         if (exifInfo->enableThumb) {
             if ((exifInfo->widthThumb != static_cast<uint32_t>(m_nThumbWidth)) ||
                     (exifInfo->heightThumb != static_cast<uint32_t>(m_nThumbHeight))) {
@@ -352,8 +351,6 @@ int ExynosJpegEncoderForCamera::encode(int *size, exif_attribute_t *exifInfo,
         return -1;
     }
 
-    unsigned long compress_delay = 0;
-    unsigned long extra_delay = 0;
     bool block_mode = !TestState(STATE_HWFC_ENABLED);
     bool thumbenc = m_pAppWriter->GetThumbStreamBase() != NULL;
     size_t thumblen = 0;
@@ -414,7 +411,7 @@ int ExynosJpegEncoderForCamera::encode(int *size, exif_attribute_t *exifInfo,
     if (*size < 0)
         return -1;
 
-    ALOGD("....compression delay(usec.): HW %lu, Total %lu)",
+    ALOGD("....compression delay(usec.): HW %u, Total %lu)",
           GetHWDelay(), stopwatch.GetElapsed());
 
     return 0;
@@ -607,7 +604,6 @@ bool ExynosJpegEncoderForCamera::GenerateThumbnailImage()
 
 size_t ExynosJpegEncoderForCamera::CompressThumbnail()
 {
-    size_t streamsize = 0;
     unsigned int v4l2Format = getColorFormat();
     int buftype = checkInBufType();
 
