@@ -1232,87 +1232,6 @@ static void csc_linear_to_tiled_interleave_crop(
        }
     }
 }
-#else
-/* 2D Configurable tiled memory access (TM)
- * Return the linear address from tiled position (x, y) */
-static unsigned int Tile2D_To_Linear(
-    unsigned int width,
-    unsigned int height,
-    unsigned int xpos,
-    unsigned int ypos,
-    int crFlag)
-{
-    int  tileNumX;
-    int  tileX, tileY;
-    int  tileAddr;
-    int  offset;
-    int  addr;
-
-    width = ((width + 15) / 16) * 16;
-    height = ((height + 15) / 16) * 16;
-    tileNumX = width / 16;
-
-    /* crFlag - 0: Y plane, 1: CbCr plane */
-    if (crFlag == 0) {
-        tileX = xpos / 16;
-        tileY = ypos / 16;
-        tileAddr = tileY * tileNumX + tileX;
-        offset = (ypos & 15) * 16 + (xpos & 15);
-        addr = (tileAddr << 8) | offset;
-    } else {
-        tileX = xpos / 16;
-        tileY = ypos / 8;
-        tileAddr = tileY * tileNumX + tileX;
-        offset = (ypos & 7) * 16 + (xpos & 15);
-        addr = (tileAddr << 7) | offset;
-    }
-
-    return addr;
-}
-
-static void Tile2D_To_YUV420(unsigned char *Y_plane, unsigned char *Cb_plane, unsigned char *Cr_plane,
-                        unsigned int y_addr, unsigned int c_addr, unsigned int width, unsigned int height)
-{
-    unsigned int x, y, j, k, l;
-    unsigned int out_of_width, actual_width, data;
-    unsigned long base_addr;
-
-    // y: 0, 16, 32, ...
-    for (y = 0; y < height; y += 16) {
-        // x: 0, 16, 32, ...
-        for (x = 0; x < width; x += 16) {
-            out_of_width = (x + 16) > width ? 1 : 0;
-            base_addr = y_addr + Tile2D_To_Linear(width, height, x, y, 0);
-
-            for (k = 0; (k < 16) && ((y + k) < height); k++) {
-                actual_width = out_of_width ? ((width%4)?((width%16) / 4 + 1) : ((width%16) / 4)) : 4;
-                for (l = 0; l < actual_width; l++) {
-                    data = *((unsigned int *)(base_addr + 16*k + l*4));
-                    for (j = 0; (j < 4) && (x + l*4 + j) < width; j++) {
-                        Y_plane[(y+k)*width + x + l*4 +j] = (data>>(8*j))&0xff;
-                    }
-                }
-            }
-        }
-    }
-
-    for (y = 0; y < height/2; y += 8) {
-        for (x = 0; x < width; x += 16) {
-            out_of_width = (x + 16) > width ? 1 : 0;
-            base_addr = c_addr + Tile2D_To_Linear(width, height/2, x, y, 1);
-            for (k = 0; (k < 8) && ((y+k) < height/2); k++) {
-                actual_width = out_of_width ? ((width%4) ? ((width%16) / 4 + 1) : ((width%16) / 4)) : 4;
-                for (l = 0; l < actual_width; l++) {
-                    data = *((unsigned int *)(base_addr + 16*k + l*4));
-                    for (j = 0; (j < 2) && (x/2 + l*2 +j) < width/2; j++) {
-                        Cb_plane[(y+k)*width/2 + x/2 + l*2 +j] = (data>> (8*2*j))&0xff;
-                        Cr_plane[(y+k)*width/2 + x/2 + l*2 +j] = (data>>(8*2*j+8))&0xff;
-                    }
-                }
-            }
-        }
-    }
-}
 #endif /* USE_NV12T_128X64 */
 
 /*
@@ -1699,10 +1618,10 @@ void csc_tiled_to_linear_uv_deinterleave(
  *
  */
 void csc_linear_to_tiled_y(
-    unsigned char *y_dst,
-    unsigned char *y_src,
-    unsigned int width,
-    unsigned int height)
+    unsigned char *y_dst __unused,
+    unsigned char *y_src __unused,
+    unsigned int width __unused,
+    unsigned int height __unused)
 {
 #ifdef USE_NV12T_128X64
 #ifdef NEON_SUPPORT
@@ -1710,11 +1629,6 @@ void csc_linear_to_tiled_y(
 #else
     csc_linear_to_tiled_crop(y_dst, y_src, width, height, 0, 0, 0, 0);
 #endif /* NEON_SUPPORT */
-#else
-    unsigned char *dst = y_dst;
-    unsigned char *src = y_src;
-    unsigned int w = width;
-    unsigned int h = height;
 #endif /* USE_NV12T_128X64 */
 }
 
@@ -1739,11 +1653,11 @@ void csc_linear_to_tiled_y(
  *
  */
 void csc_linear_to_tiled_uv(
-    unsigned char *uv_dst,
-    unsigned char *u_src,
-    unsigned char *v_src,
-    unsigned int width,
-    unsigned int height)
+    unsigned char *uv_dst __unused,
+    unsigned char *u_src __unused,
+    unsigned char *v_src __unused,
+    unsigned int width __unused,
+    unsigned int height __unused)
 {
 #ifdef USE_NV12T_128X64
 #ifdef NEON_SUPPORT
@@ -1751,12 +1665,6 @@ void csc_linear_to_tiled_uv(
 #else
     csc_linear_to_tiled_interleave_crop(uv_dst, u_src, v_src, width, height, 0, 0, 0, 0);
 #endif /* NEON_SUPPORT */
-#else
-    unsigned char *uv = uv_dst;
-    unsigned char *u = u_src;
-    unsigned char *v = v_src;
-    unsigned int w = width;
-    unsigned int h = height;
 #endif /* USE_NV12T_128X64 */
 }
 
@@ -1794,9 +1702,6 @@ void csc_RGB565_to_YUV420P(
 
     unsigned int R, G, B;
     unsigned int Y, U, V;
-
-    unsigned int offset1 = width * height;
-    unsigned int offset2 = width/2 * height/2;
 
     unsigned short int *pSrc = (unsigned short int *)rgb_src;
 
@@ -1868,8 +1773,6 @@ void csc_RGB565_to_YUV420SP(
 
     unsigned int R, G, B;
     unsigned int Y, U, V;
-
-    unsigned int offset = width * height;
 
     unsigned short int *pSrc = (unsigned short int *)rgb_src;
 
@@ -1946,9 +1849,6 @@ void csc_BGRA8888_to_YUV420P(
     unsigned int R, G, B;
     unsigned int Y, U, V;
 
-    unsigned int offset1 = width * height;
-    unsigned int offset2 = width/2 * height/2;
-
     unsigned int *pSrc = (unsigned int *)rgb_src;
 
     unsigned char *pDstY = (unsigned char *)y_dst;
@@ -2023,9 +1923,6 @@ void csc_RGBA8888_to_YUV420P(
     unsigned int R, G, B;
     unsigned int Y, U, V;
 
-    unsigned int offset1 = width * height;
-    unsigned int offset2 = width/2 * height/2;
-
     unsigned int *pSrc = (unsigned int *)rgb_src;
 
     unsigned char *pDstY = (unsigned char *)y_dst;
@@ -2099,8 +1996,6 @@ void csc_BGRA8888_to_YUV420SP(
     unsigned int R, G, B;
     unsigned int Y, U, V;
 
-    unsigned int offset = width * height;
-
     unsigned int *pSrc = (unsigned int *)rgb_src;
 
     unsigned char *pDstY = (unsigned char *)y_dst;
@@ -2172,8 +2067,6 @@ void csc_RGBA8888_to_YUV420SP(
 
     unsigned int R, G, B;
     unsigned int Y, U, V;
-
-    unsigned int offset = width * height;
 
     unsigned int *pSrc = (unsigned int *)rgb_src;
 
