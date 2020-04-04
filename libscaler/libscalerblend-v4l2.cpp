@@ -103,37 +103,37 @@ void CScalerBlendV4L2::GetCustomAlphaBlendFmt(int32_t &src_color_space,
                                                      unsigned int srcblendfmt) {
 
     if (src_color_space == V4L2_PIX_FMT_NV12M) {
-        if ((srcblendfmt == V4L2_PIX_FMT_RGB32))
+        if (srcblendfmt == V4L2_PIX_FMT_RGB32)
             src_color_space = V4L2_PIX_FMT_NV12M_RGB32;
-        else if ((srcblendfmt == V4L2_PIX_FMT_BGR32))
+        else if (srcblendfmt == V4L2_PIX_FMT_BGR32)
             src_color_space = V4L2_PIX_FMT_NV12M_BGR32;
-        else if ((srcblendfmt == V4L2_PIX_FMT_RGB565))
+        else if (srcblendfmt == V4L2_PIX_FMT_RGB565)
             src_color_space = V4L2_PIX_FMT_NV12M_RGB565;
-        else if ((srcblendfmt == V4L2_PIX_FMT_RGB444))
+        else if (srcblendfmt == V4L2_PIX_FMT_RGB444)
             src_color_space = V4L2_PIX_FMT_NV12M_RGB444;
-        else if ((srcblendfmt == V4L2_PIX_FMT_RGB555X))
+        else if (srcblendfmt == V4L2_PIX_FMT_RGB555X)
             src_color_space = V4L2_PIX_FMT_NV12M_RGB555X;
     } else if (src_color_space == V4L2_PIX_FMT_NV12) {
-            if ((srcblendfmt == V4L2_PIX_FMT_RGB32))
+            if (srcblendfmt == V4L2_PIX_FMT_RGB32)
             src_color_space = V4L2_PIX_FMT_NV12_RGB32;
 #ifdef V4L2_PIX_FMT_NV12N
     } else if (src_color_space == V4L2_PIX_FMT_NV12N) {
-            if ((srcblendfmt == V4L2_PIX_FMT_RGB32))
+            if (srcblendfmt == V4L2_PIX_FMT_RGB32)
             src_color_space = V4L2_PIX_FMT_NV12N_RGB32;
 #endif
     } else if (src_color_space == V4L2_PIX_FMT_NV12MT_16X16) {
-            if ((srcblendfmt == V4L2_PIX_FMT_RGB32))
+            if (srcblendfmt == V4L2_PIX_FMT_RGB32)
             src_color_space = V4L2_PIX_FMT_NV12MT_16X16_RGB32;
     } else if (src_color_space == V4L2_PIX_FMT_NV21M) {
-        if ((srcblendfmt == V4L2_PIX_FMT_RGB32))
+        if (srcblendfmt == V4L2_PIX_FMT_RGB32)
             src_color_space = V4L2_PIX_FMT_NV21M_RGB32;
-        else if ((srcblendfmt == V4L2_PIX_FMT_BGR32))
+        else if (srcblendfmt == V4L2_PIX_FMT_BGR32)
             src_color_space = V4L2_PIX_FMT_NV21M_BGR32;
     } else if (src_color_space == V4L2_PIX_FMT_NV21) {
-        if ((srcblendfmt == V4L2_PIX_FMT_RGB32))
+        if (srcblendfmt == V4L2_PIX_FMT_RGB32)
             src_color_space = V4L2_PIX_FMT_NV21_RGB32;
     } else if (src_color_space == V4L2_PIX_FMT_YVU420) {
-        if ((srcblendfmt == V4L2_PIX_FMT_RGB32))
+        if (srcblendfmt == V4L2_PIX_FMT_RGB32)
             src_color_space = V4L2_PIX_FMT_YVU420_RGB32;
     } else {
         src_color_space = -1;

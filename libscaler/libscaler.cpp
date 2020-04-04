@@ -178,7 +178,7 @@ int exynos_sc_destroy(void *handle)
 int exynos_sc_set_csc_property(
         void        *handle,
         unsigned int csc_range,
-        unsigned int v4l2_colorspace,
+        unsigned int v4l2_colorspace __unused,
         unsigned int filter)
 
 {
@@ -187,7 +187,6 @@ int exynos_sc_set_csc_property(
         return -1;
 
     sc->SetCSCWide(csc_range);
-    sc->SetCSCEq(v4l2_colorspace);
     sc->SetFilter(filter);
 
     return 0;
@@ -388,14 +387,13 @@ int exynos_sc_stop_exclusive(void *handle)
 
 int exynos_sc_csc_exclusive(void *handle,
                 unsigned int range_full,
-                unsigned int v4l2_colorspace)
+                unsigned int v4l2_colorspace __unused)
 {
     CScalerV4L2 *sc = GetScaler(handle);
     if (!sc)
         return -1;
 
     sc->SetCSCWide(range_full);
-    sc->SetCSCEq(v4l2_colorspace);
 
     return 0;
 }

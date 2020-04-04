@@ -260,14 +260,6 @@ public:
         SetFlag(m_fStatus, SCF_CSC_FRESH);
     }
 
-    inline void SetCSCEq(unsigned int v4l2_colorspace) {
-        if (v4l2_colorspace == V4L2_COLORSPACE_SMPTE170M)
-            m_colorspace = V4L2_COLORSPACE_DEFAULT;
-        else
-            m_colorspace = v4l2_colorspace;
-        SetFlag(m_fStatus, SCF_CSC_FRESH);
-    }
-
     inline void SetFilter(unsigned int filter) {
         m_filter = filter;
     }

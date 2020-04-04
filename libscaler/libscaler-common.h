@@ -77,7 +77,7 @@ static inline T min (T a, T b) {
 
 template <typename T>
 static inline void swap(T &a, T &b) {
-    T t = a;
+    T __unused t = a;
     a = b;
     b = a;
 }
