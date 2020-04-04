@@ -68,12 +68,11 @@ int exynos_subdev_open(const char *filename, int oflag, ...)
     return fd;
 }
 
-int exynos_subdev_get_node_num(const char *devname, int oflag, ...)
+int exynos_subdev_get_node_num(const char *devname, int oflag __unused, ...)
 {
     bool found = false;
     int ret = -1;
     struct stat s;
-    va_list ap;
     FILE *stream_fd;
     char filename[64], name[64];
     int i = 0;
@@ -136,7 +135,6 @@ int exynos_subdev_open_devname(const char *devname, int oflag, ...)
     va_list ap;
     FILE *stream_fd;
     char filename[64], name[64];
-    long size;
     int i = 0;
 
     do {

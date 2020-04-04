@@ -764,7 +764,6 @@ int exynos_v4l2_s_ctrl(int fd, unsigned int id, int value)
 int exynos_v4l2_prepare(int fd, struct v4l2_buffer *arg)
 {
     int ret = -1;
-    struct v4l2_control ctrl;
 
     Exynos_v4l2_In();
 
