@@ -45,7 +45,6 @@ int ion_memtrack_get_memory(pid_t pid, enum memtrack_type __unused type,
                              size_t *num_records)
 {
     size_t allocated_records = min(*num_records, ARRAY_SIZE(ion_record_templates));
-    int i;
     FILE *fp;
     struct stat s;
     char line[1024];
