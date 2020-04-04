@@ -82,6 +82,9 @@ typedef struct {
     int      releaseFenceFd;
     int      mem_type;
     uint32_t pre_multi;
+#ifdef USES_VR_FRONT_BUFFER
+    uint32_t use_sync;
+#endif
 } exynos_mpp_img;
 
 enum SRC_BL_OP {

@@ -50,9 +50,6 @@ void *exynos_gsc_create_exclusive(
     int out_mode,
     int allow_drm)
 {
-    int i     = 0;
-    int op_id = 0;
-    unsigned int total_sleep_time  = 0;
     int ret = 0;
 
     Exynos_gsc_In();
@@ -141,7 +138,6 @@ void exynos_gsc_destroy(void *handle)
 {
     Exynos_gsc_In();
 
-    int i = 0;
     CGscaler* gsc = GetGscaler(handle);
     if (gsc == NULL) {
         ALOGE("%s::handle == NULL() fail", __func__);
@@ -174,13 +170,6 @@ int exynos_gsc_set_csc_property(
         return -1;
     }
 
-    if (gsc->gsc_id >= HW_SCAL0) {
-        int ret;
-        ret = exynos_sc_csc_exclusive(gsc->scaler,
-                            range_full, v4l2_colorspace);
-        Exynos_gsc_Out();
-        return ret;
-    }
     gsc->eq_auto = eq_auto;
     gsc->range_full = range_full;
     gsc->v4l2_colorspace = v4l2_colorspace;
@@ -386,7 +375,7 @@ done:
 }
 
 int exynos_gsc_subdev_s_crop(void *handle,
-        exynos_mpp_img *src_img, exynos_mpp_img *dst_img)
+        exynos_mpp_img *src_img __unused, exynos_mpp_img *dst_img)
 {
     struct v4l2_subdev_crop sd_crop;
     CGscaler *gsc = GetGscaler(handle);
@@ -483,11 +472,6 @@ int exynos_gsc_run_exclusive(void *handle,
 void *exynos_gsc_create_blend_exclusive(int dev_num, int mode, int out_mode,
                                                                 int allow_drm)
 {
-    int i     = 0;
-    int op_id = 0;
-    unsigned int total_sleep_time  = 0;
-    int ret = 0;
-
     Exynos_gsc_In();
 
     if ((dev_num < 0) || (dev_num >= HW_SCAL_MAX)) {
@@ -609,8 +593,6 @@ int exynos_gsc_free_and_close(void *handle)
     Exynos_gsc_In();
 
     struct v4l2_requestbuffers reqbuf;
-    struct v4l2_buffer buf;
-    struct v4l2_plane  planes[NUM_OF_GSC_PLANES];
     int ret = 0;
     CGscaler* gsc = GetGscaler(handle);
     if (gsc == NULL) {

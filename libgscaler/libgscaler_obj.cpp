@@ -41,8 +41,7 @@ int CGscaler::m_gsc_output_create(void *handle, int dev_num, int out_mode)
     char node[32];
     char devname[32];
     unsigned int cap;
-    int         i;
-    int         fd = 0;
+
     CGscaler* gsc = GetGscaler(handle);
     if (gsc == NULL) {
         ALOGE("%s::handle == NULL() fail", __func__);
@@ -180,12 +179,9 @@ int CGscaler::m_gsc_capture_create(void *handle, int dev_num, int out_mode)
     struct media_entity *gsc_sd_entity;
     struct media_entity *gsc_vd_entity;
     struct media_entity *sink_sd_entity;
-    struct media_link *links;
     char node[32];
     char devname[32];
     unsigned int cap;
-    int         i;
-    int         fd = 0;
     CGscaler* gsc = GetGscaler(handle);
     if (gsc == NULL) {
         ALOGE("%s::handle == NULL() fail", __func__);
@@ -282,7 +278,6 @@ int CGscaler::m_gsc_out_stop(void *handle)
 {
     Exynos_gsc_In();
 
-    struct v4l2_requestbuffers reqbuf;
     CGscaler* gsc = GetGscaler(handle);
     if (gsc == NULL) {
         ALOGE("%s::handle == NULL() fail", __func__);
@@ -345,7 +340,6 @@ bool CGscaler::m_gsc_out_destroy(void *handle)
 {
     Exynos_gsc_In();
 
-    int i;
     CGscaler* gsc = GetGscaler(handle);
     if (gsc == NULL) {
         ALOGE("%s::handle == NULL() fail", __func__);
@@ -846,7 +840,7 @@ done:
 
 bool CGscaler::m_gsc_check_src_size(
     unsigned int *w,      unsigned int *h,
-    unsigned int *crop_x, unsigned int *crop_y,
+    unsigned int *crop_x __unused, unsigned int *crop_y __unused,
     unsigned int *crop_w, unsigned int *crop_h,
     int v4l2_colorformat, bool rotation)
 {
@@ -878,10 +872,10 @@ bool CGscaler::m_gsc_check_src_size(
 
 bool CGscaler::m_gsc_check_dst_size(
     unsigned int *w,      unsigned int *h,
-    unsigned int *crop_x, unsigned int *crop_y,
+    unsigned int *crop_x __unused, unsigned int *crop_y __unused,
     unsigned int *crop_w, unsigned int *crop_h,
-    int v4l2_colorformat,
-    int rotation)
+    int v4l2_colorformat  __unused,
+    int rotation  __unused)
 {
     if (*w < GSC_MIN_DST_W_SIZE || *h < GSC_MIN_DST_H_SIZE) {
         ALOGE("%s::too small size (w : %d < %d) (h : %d < %d)",
@@ -1254,14 +1248,12 @@ int CGscaler::m_gsc_out_config(void *handle,
     struct v4l2_requestbuffers reqbuf;
     struct v4l2_subdev_format sd_fmt;
     struct v4l2_subdev_crop   sd_crop;
-    int i;
+
     unsigned int rotate;
     unsigned int hflip;
     unsigned int vflip;
-    unsigned int plane_size[NUM_OF_GSC_PLANES];
     bool rgb;
 
-    struct v4l2_rect dst_rect;
     int32_t      src_color_space;
     int32_t      dst_color_space;
     int32_t      src_planes;
@@ -1497,14 +1489,11 @@ int CGscaler::m_gsc_cap_config(void *handle,
     struct v4l2_requestbuffers reqbuf;
     struct v4l2_subdev_format sd_fmt;
     struct v4l2_subdev_crop   sd_crop;
-    int i;
     unsigned int rotate;
     unsigned int hflip;
     unsigned int vflip;
-    unsigned int plane_size[NUM_OF_GSC_PLANES];
     bool rgb;
 
-    struct v4l2_rect dst_rect;
     int32_t      src_color_space;
     int32_t      dst_color_space;
     int32_t      dst_planes;
@@ -2053,10 +2042,9 @@ int CGscaler::FreeMpp(void *handle)
 }
 
 int CGscaler::SetInputCrop(void *handle,
-        exynos_mpp_img *src_img, exynos_mpp_img *dst_img)
+        exynos_mpp_img *src_img, exynos_mpp_img *dst_img __unused)
 {
     struct v4l2_crop crop;
-    int ret = 0;
     CGscaler *gsc = GetGscaler(handle);
     if (gsc == NULL) {
         ALOGE("%s::handle == NULL() fail", __func__);
