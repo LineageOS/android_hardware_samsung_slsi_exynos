@@ -715,7 +715,7 @@ void printDataBlit(char *title, const char *called, struct fimg2d_blit *cmd)
     SLOGI("%s (From %s)\n", title, called);
     SLOGI("    sequence_no. = %u\n", cmd->seq_no);
     SLOGI("    blit_op      = %d(%s)\n", srcImage->op, optbl[srcImage->op].str);
-    SLOGI("    fill_color   = %X\n", srcParam->solid_color);
+    SLOGI("    fill_color   = %lu\n", srcParam->solid_color);
     SLOGI("    global_alpha = %u\n", (unsigned int)srcParam->g_alpha);
     SLOGI("    PREMULT      = %s\n", srcParam->premult == PREMULTIPLIED ? "PREMULTIPLIED" : "NON-PREMULTIPLIED");
     SLOGI("    do_dither    = %s\n", cmd->dither == true ? "dither" : "no-dither");

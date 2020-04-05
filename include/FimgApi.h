@@ -124,7 +124,7 @@ private :
 
 protected :
     FimgApi();
-    FimgApi(const FimgApi& rhs) {}
+    FimgApi(const FimgApi& rhs __unused) {}
     virtual ~FimgApi();
 
 public:
@@ -154,7 +154,7 @@ protected:
 #ifdef __cplusplus
 extern "C"
 #endif
-struct FimgApi *createFimgApi();
+FimgApi *createFimgApi();
 
 #ifdef __cplusplus
 extern "C"
