@@ -16,7 +16,7 @@ LOCAL_PATH:= $(call my-dir)
 include $(CLEAR_VARS)
 
 LOCAL_PRELINK_MODULE := false
-LOCAL_SHARED_LIBRARIES := liblog libutils libcutils libexynosutils \
+LOCAL_SHARED_LIBRARIES := liblog libion libutils libcutils libexynosutils \
 			  libsync libexynosv4l2 libhwcutils libexynosdisplay \
 			  libmpp
 
