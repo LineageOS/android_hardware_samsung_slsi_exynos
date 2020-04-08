@@ -715,6 +715,7 @@ size_t ExynosJpegEncoderForCamera::CompressThumbnailOnly(size_t limit, int quali
         case V4L2_PIX_FMT_YUV420M:
         case V4L2_PIX_FMT_YVU420M:
             num_buffers++;
+            [[fallthrough]];
         case V4L2_PIX_FMT_NV12M:
         case V4L2_PIX_FMT_NV21M:
             num_buffers++;
