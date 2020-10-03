@@ -28,7 +28,7 @@
 
 #include "libcec.h"
 
-#define CEC_DEBUG 0
+//#define CEC_DEBUG 0
 
 /**
  * @def CEC_DEVICE_NAME
