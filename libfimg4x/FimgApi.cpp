@@ -75,7 +75,7 @@ struct blitinfo_table repeat_tbl[] = {
 };
 
 #ifndef REAL_DEBUG
-    void VOID_FUNC(const char *format, ...)
+    void VOID_FUNC(const char *format __unused, ...)
     {}
 #endif
 
@@ -208,7 +208,7 @@ bool FimgApi::t_Destroy(void)
     return false;
 }
 
-bool FimgApi::t_Stretch(struct fimg2d_blit *cmd)
+bool FimgApi::t_Stretch(struct fimg2d_blit *cmd __unused)
 {
     PRINT("%s::This is empty virtual function fail\n", __func__);
     return false;
@@ -431,7 +431,7 @@ void printDataBlit(char *title, const char *called, struct fimg2d_blit *cmd)
     SLOGI("%s (From %s)\n", title, called);
     SLOGI("    sequence_no. = %u\n", cmd->seq_no);
     SLOGI("    blit_op      = %d(%s)\n", cmd->op, optbl[cmd->op].str);
-    SLOGI("    fill_color   = %X\n", cmd->param.solid_color);
+    SLOGI("    fill_color   = %lu\n", cmd->param.solid_color);
     SLOGI("    global_alpha = %u\n", (unsigned int)cmd->param.g_alpha);
     SLOGI("    PREMULT      = %s\n", cmd->param.premult == PREMULTIPLIED ? "PREMULTIPLIED" : "NON-PREMULTIPLIED");
     SLOGI("    do_dither    = %s\n", cmd->param.dither == true ? "dither" : "no-dither");
@@ -455,7 +455,7 @@ void printDataBlitImage(const char *title, struct fimg2d_image *image)
 {
     if (NULL != image) {
         SLOGI("    Image_%s\n", title);
-        SLOGI("        addr = %X\n", image->addr.start);
+        SLOGI("        addr = %lx\n", image->addr.start);
         SLOGI("        format = %d\n", image->fmt);
         SLOGI("        size = (%d, %d)\n", image->width, image->height);
     } else {
