@@ -10,8 +10,8 @@
 
 ExynosOverlayDisplay::ExynosOverlayDisplay(int numMPPs, struct exynos5_hwc_composer_device_1_t *pdev)
     :   ExynosDisplay(numMPPs),
-        mLastFbWindow(NO_FB_NEEDED),
         mGrallocModule(NULL),
+        mLastFbWindow(NO_FB_NEEDED),
         mLastOverlayWindowIndex(-1),
         mLastOverlayLayerIndex(-1),
         mVirtualOverlayFlag(0),
@@ -25,15 +25,15 @@ ExynosOverlayDisplay::ExynosOverlayDisplay(int numMPPs, struct exynos5_hwc_compo
         mBypassSkipStaticLayer(false),
         mGscUsed(false),
         mCurrentGscIndex(0),
+        mBlanked(true),
         mFbNeeded(false),
         mFirstFb(0),
         mLastFb(0),
         mForceFb(false),
         mForceOverlayLayerIndex(-1),
         mRetry(false),
-        mBlanked(true),
-        mMaxWindowOverlapCnt(NUM_HW_WINDOWS),
-        mAllowedOverlays(5)
+        mAllowedOverlays(5),
+        mMaxWindowOverlapCnt(NUM_HW_WINDOWS)
 {
     mMPPs = new ExynosMPPModule*[mNumMPPs];
     for (int i = 0; i < mNumMPPs; i++)
@@ -122,7 +122,7 @@ bool ExynosOverlayDisplay::isOverlaySupported(hwc_layer_1_t &layer, size_t i)
 
     if (mMPPs[mMPPIndex]->isProcessingRequired(layer, handle->format)) {
         int downNumerator, downDenominator;
-        int downError = mMPPs[mMPPIndex]->getDownscaleRatio(&downNumerator, &downDenominator);
+        mMPPs[mMPPIndex]->getDownscaleRatio(&downNumerator, &downDenominator);
         /* Check whether GSC can handle using local or M2M */
         ret = mMPPs[mMPPIndex]->isProcessingSupported(layer, handle->format, false);
         if (ret < 0) {
@@ -581,7 +581,7 @@ int ExynosOverlayDisplay::handleWindowUpdate(hwc_display_contents_1_t* contents,
     while (1) {
         burstLengthCheckDone = true;
 
-        for (int i = 0; i < NUM_HW_WINDOWS; i++) {
+        for (size_t i = 0; i < NUM_HW_WINDOWS; i++) {
             if (config[i].state != config[i].S3C_FB_WIN_STATE_DISABLED) {
                 if (config[i].format == S3C_FB_PIXEL_FORMAT_RGB_565)
                     bytePerPixel = 2;
@@ -597,7 +597,7 @@ int ExynosOverlayDisplay::handleWindowUpdate(hwc_display_contents_1_t* contents,
 
                 HLOGV("[WIN_UPDATE] win[%d] left(%d) right(%d) intersection(%d)", i, currentRect.left, currentRect.right, intersectionWidth);
 
-                if (intersectionWidth != 0 && intersectionWidth * bytePerPixel < BURSTLEN_BYTES) {
+                if (intersectionWidth != 0 && (size_t)(intersectionWidth * bytePerPixel) < BURSTLEN_BYTES) {
                     HLOGV("[WIN_UPDATE] win[%d] insufficient burst length (%d)*(%d) < %d", i, intersectionWidth, bytePerPixel, BURSTLEN_BYTES);
                     burstLengthCheckDone = false;
                     break;
@@ -808,7 +808,7 @@ int ExynosOverlayDisplay::set(hwc_display_contents_1_t* contents)
             err = fence;
     }
 
-    if (err)
+    if (err < 0)
         fence = clearDisplay();
 
     for (size_t i = 0; i < NUM_HW_WINDOWS; i++) {
@@ -863,7 +863,7 @@ int ExynosOverlayDisplay::set(hwc_display_contents_1_t* contents)
 
 int ExynosOverlayDisplay::getCompModeSwitch()
 {
-    unsigned int tot_win_size = 0, updateFps = 0;
+    unsigned int updateFps = 0;
     unsigned int lcd_size = this->mXres * this->mYres;
     uint64_t TimeStampDiff;
     float Temp;
@@ -946,7 +946,7 @@ int ExynosOverlayDisplay::getCompModeSwitch()
     return 0;
 }
 
-int32_t ExynosOverlayDisplay::getDisplayAttributes(const uint32_t attribute)
+int32_t ExynosOverlayDisplay::getDisplayAttributes(const uint32_t attribute, uint32_t config __unused)
 {
     switch(attribute) {
     case HWC_DISPLAY_VSYNC_PERIOD:
@@ -1037,11 +1037,11 @@ void ExynosOverlayDisplay::skipStaticLayers(hwc_display_contents_1_t* contents)
     return;
 }
 
-void ExynosOverlayDisplay::forceYuvLayersToFb(hwc_display_contents_1_t *contents)
+void ExynosOverlayDisplay::forceYuvLayersToFb(hwc_display_contents_1_t *contents __unused)
 {
 }
 
-void ExynosOverlayDisplay::handleOffscreenRendering(hwc_layer_1_t &layer, hwc_display_contents_1_t *contents, int index)
+void ExynosOverlayDisplay::handleOffscreenRendering(hwc_layer_1_t &layer __unused, hwc_display_contents_1_t *contents __unused, int index __unused)
 {
 }
 
@@ -1084,10 +1084,12 @@ void ExynosOverlayDisplay::determineYuvOverlay(hwc_display_contents_1_t *content
             handleOffscreenRendering(layer, contents, i);
         }
 
+#ifdef HWC_SCREENSHOT_ANIMATOR_LAYER
 #if defined(USE_GRALLOC_FLAG_FOR_HDMI) || defined(USES_VIRTUAL_DISPLAY)
         /* during rotation, it use gpu comosition */
         if (layer.flags & HWC_SCREENSHOT_ANIMATOR_LAYER)
             mForceFb = true;
+#endif
 #endif
     }
     mPopupPlayYuvContents = !!(((mYuvLayers == 1) || (this->mHasDrmSurface)) && (mForceOverlayLayerIndex > 0));
@@ -1493,7 +1495,7 @@ void ExynosOverlayDisplay::determineBandwidthSupport(hwc_display_contents_1_t *c
             }
         }
         handleTotalBandwidthOverload(contents);
-        if (intersectionCnt > mMaxWindowOverlapCnt) {
+        if ((size_t)intersectionCnt > mMaxWindowOverlapCnt) {
             HLOGD("Total Overlap Cnt(%d) >  Max Overlap Cnt(%d)", intersectionCnt, mMaxWindowOverlapCnt);
             changed = true;
             reduceAvailableWindowCnt = true;
@@ -1582,7 +1584,7 @@ void ExynosOverlayDisplay::assignWindows(hwc_display_contents_1_t *contents)
     }
 }
 
-bool ExynosOverlayDisplay::assignGscLayer(hwc_layer_1_t &layer, int index, int nextWindow)
+bool ExynosOverlayDisplay::assignGscLayer(hwc_layer_1_t &layer, int index __unused, int nextWindow)
 {
     private_handle_t *handle = private_handle_t::dynamicCast(layer.handle);
     size_t gscIndex = 0;
@@ -1637,7 +1639,7 @@ bool ExynosOverlayDisplay::assignGscLayer(hwc_layer_1_t &layer, int index, int n
     return ret;
 }
 
-int ExynosOverlayDisplay::waitForRenderFinish(buffer_handle_t *handle, int buffers)
+int ExynosOverlayDisplay::waitForRenderFinish(buffer_handle_t *handle __unused, int buffers __unused)
 {
     return 0;
 }
@@ -1780,7 +1782,7 @@ void ExynosOverlayDisplay::handleStaticLayers(hwc_display_contents_1_t *contents
     }
 }
 
-int ExynosOverlayDisplay::getMPPForUHD(hwc_layer_1_t &layer)
+int ExynosOverlayDisplay::getMPPForUHD(hwc_layer_1_t &layer __unused)
 {
     return FIMD_GSC_IDX;
 }
@@ -1850,7 +1852,7 @@ void ExynosOverlayDisplay::handleTotalBandwidthOverload(hwc_display_contents_1_t
                     break;
             }
             if (mHwc->totPixels >= FIMD_TOTAL_BW_LIMIT) {
-                for (int i = mLastFb + 1; i < contents->numHwLayers - 1; i++) {
+                for (size_t i = mLastFb + 1; i < contents->numHwLayers - 1; i++) {
                     hwc_layer_1_t &layer = contents->hwLayers[i];
                     refreshGscUsage(layer);
                     layer.compositionType = HWC_FRAMEBUFFER;
@@ -1867,7 +1869,7 @@ void ExynosOverlayDisplay::handleTotalBandwidthOverload(hwc_display_contents_1_t
             for (size_t i = 0; i < contents->numHwLayers; i++) {
                 hwc_layer_1_t &layer = contents->hwLayers[i];
                 if (layer.compositionType == HWC_OVERLAY &&
-                        mForceOverlayLayerIndex != i) {
+                        mForceOverlayLayerIndex != (int)i) {
                     refreshGscUsage(layer);
                     layer.compositionType = HWC_FRAMEBUFFER;
                     mLastFb = max(mLastFb, i);

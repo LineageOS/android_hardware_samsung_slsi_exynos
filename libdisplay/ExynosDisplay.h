@@ -80,7 +80,7 @@ class ExynosDisplay {
         virtual void freeMPP();
         virtual void allocateLayerInfos(hwc_display_contents_1_t* contents);
         virtual void dumpLayerInfo(android::String8& result);
-        virtual int32_t getDisplayAttributes(const uint32_t __unused attribute, uint32_t __unused config = 0) {return 0;};
+        virtual int32_t getDisplayAttributes(const uint32_t __unused attribute, uint32_t config __unused) {return 0;};
         virtual int getActiveConfig() {return 0;};
         virtual int setActiveConfig(int __unused index) {return 0;};
 
