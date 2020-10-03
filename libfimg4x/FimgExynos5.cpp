@@ -195,27 +195,17 @@ SYNC_FAIL:
 
 bool FimgV4x::t_Lock(void)
 {
-    if (&m_lock != NULL) {
-        status_t ret = m_lock.lock();
-        return true;
-    }
-    PRINT("%s::m_lock is NULL",__func__);
-    return false;
+    return m_lock.lock();
 }
 
 bool FimgV4x::t_UnLock(void)
 {
-    if (&m_lock != NULL) {
-        m_lock.unlock();
-        return true;
-    }
-    PRINT("%s::m_lock is NULL",__func__);
-    return false;
+    m_lock.unlock();
+    return true;
 }
 
 bool FimgV4x::m_CreateG2D(void)
 {
-    void * mmap_base;
     int val = 0;
 
     if (m_g2dFd != 0) {
@@ -302,7 +292,7 @@ inline bool FimgV4x::m_PollG2D(struct pollfd * events)
 //---------------------------------------------------------------------------//
 // extern function
 //---------------------------------------------------------------------------//
-extern "C" struct FimgApi * createFimgApi()
+extern "C" FimgApi * createFimgApi()
 {
     if (fimgApiAutoFreeThread == 0)
         fimgApiAutoFreeThread = new FimgApiAutoFreeThread();
@@ -312,7 +302,7 @@ extern "C" struct FimgApi * createFimgApi()
     return FimgV4x::CreateInstance();
 }
 
-extern "C" void destroyFimgApi(FimgApi * ptrFimgApi)
+extern "C" void destroyFimgApi(FimgApi * ptrFimgApi __unused)
 {
     // Dont' call DestroyInstance.
 }
