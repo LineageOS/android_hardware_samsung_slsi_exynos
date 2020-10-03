@@ -1173,7 +1173,10 @@ static ExynosVideoErrorType MFC_Decoder_Get_Geometry_Outbuf(
 
     struct v4l2_format fmt;
     struct v4l2_crop   crop;
-    int i, value;
+    int i;
+#ifdef V4L2_CID_MPEG_MFC_GET_10BIT_INFO
+    int value;
+#endif
 
     if (pCtx == NULL) {
         ALOGE("%s: Video context info must be supplied", __func__);
@@ -1219,6 +1222,7 @@ static ExynosVideoErrorType MFC_Decoder_Get_Geometry_Outbuf(
 #endif
         bufferConf->bInterlaced = VIDEO_FALSE;
 
+#ifdef V4L2_CID_MPEG_MFC_GET_10BIT_INFO
     exynos_v4l2_g_ctrl(pCtx->hDec, V4L2_CID_MPEG_MFC_GET_10BIT_INFO, &value);
     if (value == 1) {
         bufferConf->eFilledDataType = DATA_8BIT_WITH_2BIT;
@@ -1234,6 +1238,7 @@ static ExynosVideoErrorType MFC_Decoder_Get_Geometry_Outbuf(
 #endif
         }
     }
+#endif
 
     /* Get planes aligned buffer size */
     for (i = 0; i < pCtx->nOutbufPlanes; i++)
