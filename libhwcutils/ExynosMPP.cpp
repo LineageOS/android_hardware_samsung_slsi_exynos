@@ -54,7 +54,7 @@ ExynosMPP::ExynosMPP(ExynosDisplay *display, int gscIndex)
     mDoubleOperation = false;
     mBufferFreeThread = new BufferFreeThread(this);
     mBufferFreeThread->mRunning = true;
-    mBufferFreeThread->run();
+    mBufferFreeThread->run("MPPThread");
 }
 
 ExynosMPP::~ExynosMPP()
@@ -389,10 +389,9 @@ bool ExynosMPP::isProcessingRequired(hwc_layer_1_t &layer, int format)
             || isTransformed(layer);
 }
 
-int ExynosMPP::getAdjustedCrop(int rawSrcSize, int dstSize, int format, bool isVertical, bool isRotated)
+int ExynosMPP::getAdjustedCrop(int rawSrcSize, int dstSize, int format, bool isVertical __unused, bool isRotated)
 {
     int ratio;
-    int adjustedSize;
     int align;
 
     if (dstSize >= rawSrcSize || rawSrcSize <= dstSize * FIRST_PRESCALER_THRESHOLD)
@@ -474,17 +473,17 @@ void ExynosMPP::setupOtfDestination(exynos_mpp_img &src_img, exynos_mpp_img &dst
     dst_img.yaddr = (ptrdiff_t)NULL;
 }
 
-int ExynosMPP::sourceWidthAlign(int format)
+int ExynosMPP::sourceWidthAlign(int format __unused)
 {
     return 16;
 }
 
-int ExynosMPP::sourceHeightAlign(int format)
+int ExynosMPP::sourceHeightAlign(int format __unused)
 {
     return 16;
 }
 
-int ExynosMPP::destinationAlign(int format)
+int ExynosMPP::destinationAlign(int format __unused)
 {
     return 16;
 }
@@ -525,8 +524,6 @@ int ExynosMPP::processOTF(hwc_layer_1_t &layer)
     ATRACE_CALL();
     ALOGV("configuring gscaler %u for memory-to-fimd-localout", mIndex);
 
-    buffer_handle_t dst_buf;
-    private_handle_t *dst_handle;
     int ret = 0;
 
     int dstAlign;
@@ -786,14 +783,15 @@ int ExynosMPP::processM2M(hwc_layer_1_t &layer, int dst_format, hwc_frect_t *sou
     ATRACE_CALL();
     ALOGV("configuring gscaler %u for memory-to-memory", AVAILABLE_GSC_UNITS[mIndex]);
 
+#ifdef USES_VIRTUAL_DISPLAY
     alloc_device_t* alloc_device = mDisplay->mAllocDevice;
+#endif
     private_handle_t *src_handle = private_handle_t::dynamicCast(layer.handle);
     buffer_handle_t dst_buf;
     private_handle_t *dst_handle;
     buffer_handle_t mid_buf;
     private_handle_t *mid_handle;
     int ret = 0;
-    int dstAlign;
 
     if (isUsingMSC()) {
         if (dst_format != HAL_PIXEL_FORMAT_RGB_565)
@@ -1198,17 +1196,17 @@ bool ExynosMPP::isDstConfigChanged(exynos_mpp_img &c1, exynos_mpp_img &c2)
             c1.drmMode != c2.drmMode;
 }
 
-bool ExynosMPP::isSourceCropChanged(exynos_mpp_img &c1, exynos_mpp_img &c2)
+bool ExynosMPP::isSourceCropChanged(exynos_mpp_img &c1 __unused, exynos_mpp_img &c2 __unused)
 {
     return false;
 }
 
-bool ExynosMPP::isPerFrameSrcChanged(exynos_mpp_img &c1, exynos_mpp_img &c2)
+bool ExynosMPP::isPerFrameSrcChanged(exynos_mpp_img &c1 __unused, exynos_mpp_img &c2 __unused)
 {
     return false;
 }
 
-bool ExynosMPP::isPerFrameDstChanged(exynos_mpp_img &c1, exynos_mpp_img &c2)
+bool ExynosMPP::isPerFrameDstChanged(exynos_mpp_img &c1 __unused, exynos_mpp_img &c2 __unused)
 {
     return false;
 }
