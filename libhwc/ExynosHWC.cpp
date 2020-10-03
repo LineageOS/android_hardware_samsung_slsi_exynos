@@ -965,7 +965,7 @@ int exynos5_getDisplayAttributes(struct hwc_composer_device_1 *dev,
             values[i] = pdev->secondaryDisplay->getDisplayAttributes(attributes[i]);
 #else
         if (disp == HWC_DISPLAY_PRIMARY)
-            values[i] = pdev->primaryDisplay->getDisplayAttributes(attributes[i]);
+            values[i] = pdev->primaryDisplay->getDisplayAttributes(attributes[i], config);
 #endif
         else if (disp == HWC_DISPLAY_EXTERNAL) {
             if (hwcHasApiVersion((hwc_composer_device_1_t*)dev, HWC_DEVICE_API_VERSION_1_4))
