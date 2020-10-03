@@ -104,7 +104,6 @@ int ExynosG2DWrapper::runCompositor(hwc_layer_1_t &src_layer, private_handle_t *
 {
     int ret = 0;
     unsigned long srcYAddress = 0;
-    unsigned long srcCbCrAddress = 0;
     unsigned long dstYAddress = 0;
     unsigned long dstCbCrAddress =0;
 
@@ -412,7 +411,6 @@ int ExynosG2DWrapper::runSecureCompositor(hwc_layer_1_t &src_layer,
         blit_op mode, bool force_clear)
 {
     int ret = 0;
-    unsigned long srcYAddress = 0;
 
     ExynosRect   srcImgRect, dstImgRect;
 
@@ -441,8 +439,6 @@ int ExynosG2DWrapper::runSecureCompositor(hwc_layer_1_t &src_layer,
 
     uint32_t srcG2d_bpp, dstG2d_bpp;
     uint32_t srcImageSize, dstImageSize;
-    bool src_ion_mapped = false;
-    bool dst_ion_mapped = false;
 
     private_handle_t *src_handle = private_handle_t::dynamicCast(src_layer.handle);
 
@@ -644,7 +640,7 @@ bool ExynosG2DWrapper::InitSecureG2D()
                 ALOGE("%s: failed to mmap for virtual display buffer", __func__);
                 return -ENOMEM;
             }
-            ALOGI("allocated secure g2d input buffer: 0x%x", mVirtualDisplay->mPhysicallyLinearBufferAddr);
+            ALOGI("allocated secure g2d input buffer: 0x%lx", mVirtualDisplay->mPhysicallyLinearBufferAddr);
         }
     }
     return true;
@@ -658,7 +654,7 @@ bool ExynosG2DWrapper::TerminateSecureG2D()
 
     int ret = 0;
     if (mVirtualDisplay->mPhysicallyLinearBuffer) {
-        ALOGI("free g2d input buffer: 0x%x", mVirtualDisplay->mPhysicallyLinearBufferAddr);
+        ALOGI("free g2d input buffer: 0x%lx", mVirtualDisplay->mPhysicallyLinearBufferAddr);
         munmap((void *)mVirtualDisplay->mPhysicallyLinearBufferAddr, mAllocSize);
         mVirtualDisplay->mPhysicallyLinearBufferAddr = 0;
 
@@ -676,7 +672,7 @@ bool ExynosG2DWrapper::TerminateSecureG2D()
 }
 #endif
 
-void ExynosG2DWrapper::exynos5_cleanup_g2d(int force)
+void ExynosG2DWrapper::exynos5_cleanup_g2d(int force __unused)
 {
 #ifdef G2D_COMPOSITION
     exynos5_g2d_data_t &mG2d = mDisplay->mG2d;
@@ -722,7 +718,7 @@ void ExynosG2DWrapper::exynos5_cleanup_g2d(int force)
 #endif
 }
 
-int ExynosG2DWrapper::exynos5_g2d_buf_alloc(hwc_display_contents_1_t* contents)
+int ExynosG2DWrapper::exynos5_g2d_buf_alloc(hwc_display_contents_1_t* contents __unused)
 {
 #ifdef G2D_COMPOSITION
     int w, h;
@@ -785,7 +781,7 @@ G2D_BUF_ALLOC_FAIL:
     return 1;
 }
 
-int ExynosG2DWrapper::exynos5_config_g2d(hwc_layer_1_t &layer, private_handle_t *dst_handle, s3c_fb_win_config &cfg, int win_idx_2d, int win_idx)
+int ExynosG2DWrapper::exynos5_config_g2d(hwc_layer_1_t &layer __unused, private_handle_t *dst_handle __unused, s3c_fb_win_config &cfg __unused, int win_idx_2d __unused, int win_idx __unused)
 {
 #ifdef G2D_COMPOSITION
     int ret = 0;
