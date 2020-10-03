@@ -5,6 +5,7 @@
 #include "ExynosDisplay.h"
 
 #define S3D_ERROR -1
+#undef HDMI_PRESET_DEFAULT
 #define HDMI_PRESET_DEFAULT V4L2_DV_1080P60
 #define HDMI_PRESET_ERROR -1
 
@@ -37,7 +38,7 @@ class ExynosOverlayDisplay : public ExynosDisplay {
 
         int clearDisplay();
         int getCompModeSwitch();
-        int32_t getDisplayAttributes(const uint32_t attribute);
+        int32_t getDisplayAttributes(const uint32_t attribute, uint32_t config);
 
         bool switchOTF(bool enable);
 

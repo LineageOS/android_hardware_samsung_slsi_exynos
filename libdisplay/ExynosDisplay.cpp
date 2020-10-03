@@ -139,17 +139,17 @@ int ExynosDisplay::inverseWinMap(int windowIndex, int totalOverlays)
     return windowIndex;
 }
 
-int ExynosDisplay::prepare(hwc_display_contents_1_t *contents)
+int ExynosDisplay::prepare(hwc_display_contents_1_t *contents __unused)
 {
     return 0;
 }
 
-int ExynosDisplay::set(hwc_display_contents_1_t *contents)
+int ExynosDisplay::set(hwc_display_contents_1_t *contents __unused)
 {
     return 0;
 }
 
-void ExynosDisplay::dump(android::String8& result)
+void ExynosDisplay::dump(android::String8& result __unused)
 {
 }
 
@@ -169,7 +169,7 @@ void ExynosDisplay::allocateLayerInfos(hwc_display_contents_1_t* contents)
         mLayerInfos.clear();
     }
 
-    for (int i= 0; i < contents->numHwLayers; i++) {
+    for (size_t i= 0; i < contents->numHwLayers; i++) {
         ExynosLayerInfo *layerInfo = new ExynosLayerInfo();
         mLayerInfos.push(layerInfo);
     }
