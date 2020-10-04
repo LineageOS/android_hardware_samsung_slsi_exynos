@@ -88,7 +88,6 @@ ExynosExternalDisplay::~ExynosExternalDisplay()
 int ExynosExternalDisplay::openHdmi()
 {
     int ret = 0;
-    int sw_fd;
 
     mMixer = exynos_subdev_open_devname("s5p-mixer0", O_RDWR);
     if (mMixer < 0) {
@@ -227,7 +226,6 @@ int ExynosExternalDisplay::getConfig()
     int dv_timings_index = 0;
 #endif
     struct v4l2_dv_preset preset;
-    int ret;
 
     if (!mHwc->hdmi_hpd)
         return -1;
@@ -796,7 +794,7 @@ void ExynosExternalDisplay::calculateDstRect(int src_w, int src_h, int dst_w, in
     }
 }
 
-bool ExynosExternalDisplay::isVPSupported(hwc_layer_1_t &layer, int format)
+bool ExynosExternalDisplay::isVPSupported(hwc_layer_1_t &layer __unused, int format __unused)
 {
 #if defined(VP_VIDEO)
     int min_source_width = 32;
@@ -913,7 +911,6 @@ int ExynosExternalDisplay::prepare(hwc_display_contents_1_t* contents)
             }
 
             if (i == videoIndex) {
-                struct v4l2_rect dest_rect;
                 if (mHwc->mS3DMode != S3D_MODE_DISABLED) {
                     layer.displayFrame.left = 0;
                     layer.displayFrame.top = 0;
@@ -1014,7 +1011,6 @@ int ExynosExternalDisplay::set(hwc_display_contents_1_t* contents)
             ALOGV("HDMI video layer:");
             dumpLayer(&layer);
 
-            int gsc_idx = HDMI_GSC_IDX;
             bool changedPreset = false;
             if (mHwc->mS3DMode != S3D_MODE_DISABLED && mHwc->mHdmiResolutionChanged) {
                 if (isPresetSupported(mHwc->mHdmiPreset)) {
@@ -1331,7 +1327,7 @@ int ExynosExternalDisplay::blank()
     return 0;
 }
 
-int ExynosExternalDisplay::waitForRenderFinish(private_module_t *grallocModule, buffer_handle_t *handle, int buffers)
+int ExynosExternalDisplay::waitForRenderFinish(private_module_t *grallocModule __unused, buffer_handle_t *handle __unused, int buffers __unused)
 {
     return 0;
 }
