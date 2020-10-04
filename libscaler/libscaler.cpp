@@ -40,6 +40,8 @@
 #include "libscaler-common.h"
 #include "libscalerblend-v4l2.h"
 #include "libscaler-v4l2.h"
+
+#ifdef SCALER_USE_M2M1SHOT
 #include "libscaler-m2m1shot.h"
 
 static bool find_pixel(unsigned int sc_pxfmt, unsigned int __out *v4l2_pxfmt)
@@ -117,7 +119,6 @@ bool exynos_sc_copy_pixels(exynos_sc_pxinfo *pxinfo, int dev_num)
     return sc.Run();
 }
 
-#ifdef SCALER_USE_M2M1SHOT
 typedef CScalerM2M1SHOT CScalerNonStream;
 #else
 typedef CScalerV4L2 CScalerNonStream;
