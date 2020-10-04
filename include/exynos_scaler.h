@@ -444,10 +444,11 @@ enum SC_FMT_PXINFO {
  *   true on success in copying pixel data.
  *   false on failure.
  */
+#ifdef SCALER_USE_M2M1SHOT
 bool exynos_sc_copy_pixels(
     struct exynos_sc_pxinfo *pxinfo,
     int dev_num);
-
+#endif
 #ifdef __cplusplus
 }
 #endif
