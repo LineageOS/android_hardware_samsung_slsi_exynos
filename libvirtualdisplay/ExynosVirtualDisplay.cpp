@@ -67,14 +67,14 @@ int ExynosVirtualDisplay::prepare(hwc_display_contents_1_t* contents)
     mIsNormalDRM = false;
     for (size_t i = 0; i < contents->numHwLayers; i++) {
         hwc_layer_1_t &layer = contents->hwLayers[i];
-
+#ifdef HWC_SCREENSHOT_ANIMATOR_LAYER
         if (layer.flags & HWC_SCREENSHOT_ANIMATOR_LAYER) {
             ALOGV("include rotation animation layer");
             mIsRotationState = true;
             overlay_layer = &layer;
             break;
         }
-
+#endif
         if (layer.flags & HWC_SKIP_LAYER) {
             ALOGV("include skipped layer");
             if (layer.handle) {
@@ -126,7 +126,7 @@ int ExynosVirtualDisplay::prepare(hwc_display_contents_1_t* contents)
     else if (overlay_layer)
         mCompositionType = COMPOSITION_HWC;
 
-    ALOGV("mCompositionType 0x%x, mPrevCompositionType 0x%x, overlay_layer 0x%x, fb_layer 0x%x",
+    ALOGV("mCompositionType 0x%x, mPrevCompositionType 0x%x, overlay_layer 0x%p, fb_layer 0x%p",
         mCompositionType, mPrevCompositionType, overlay_layer, fb_layer);
 
     if (mPrevCompositionType != mCompositionType) {
@@ -184,7 +184,7 @@ int ExynosVirtualDisplay::prepare(hwc_display_contents_1_t* contents)
                         video_layer = &layer;
                         calcDisplayRect(layer);
 
-                        ALOGV("\tlayer %u: video layer, mIsSecureDRM %d, mPhysicallyLinearBuffer 0x%x",
+                        ALOGV("\tlayer %u: video layer, mIsSecureDRM %d, mPhysicallyLinearBuffer 0x%p",
                             i, mIsSecureDRM, mPhysicallyLinearBuffer);
                         dumpLayer(&layer);
                         continue;
@@ -576,7 +576,7 @@ void ExynosVirtualDisplay::init()
 
 }
 
-void ExynosVirtualDisplay::init(hwc_display_contents_1_t* contents)
+void ExynosVirtualDisplay::init(hwc_display_contents_1_t* contents __unused)
 {
     init();
 }
@@ -602,7 +602,7 @@ int ExynosVirtualDisplay::getConfig()
     return 0;
 }
 
-int32_t ExynosVirtualDisplay::getDisplayAttributes(const uint32_t attribute)
+int32_t ExynosVirtualDisplay::getDisplayAttributes(const uint32_t attribute __unused, uint32_t config __unused)
 {
     return 0;
 }

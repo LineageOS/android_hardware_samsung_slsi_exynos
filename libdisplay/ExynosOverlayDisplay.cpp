@@ -581,7 +581,7 @@ int ExynosOverlayDisplay::handleWindowUpdate(hwc_display_contents_1_t* contents,
     while (1) {
         burstLengthCheckDone = true;
 
-        for (size_t i = 0; i < NUM_HW_WINDOWS; i++) {
+        for (int i = 0; i < NUM_HW_WINDOWS; i++) {
             if (config[i].state != config[i].S3C_FB_WIN_STATE_DISABLED) {
                 if (config[i].format == S3C_FB_PIXEL_FORMAT_RGB_565)
                     bytePerPixel = 2;
@@ -597,7 +597,7 @@ int ExynosOverlayDisplay::handleWindowUpdate(hwc_display_contents_1_t* contents,
 
                 HLOGV("[WIN_UPDATE] win[%d] left(%d) right(%d) intersection(%d)", i, currentRect.left, currentRect.right, intersectionWidth);
 
-                if (intersectionWidth != 0 && (size_t)(intersectionWidth * bytePerPixel) < BURSTLEN_BYTES) {
+                if (intersectionWidth != 0 && intersectionWidth * bytePerPixel < BURSTLEN_BYTES) {
                     HLOGV("[WIN_UPDATE] win[%d] insufficient burst length (%d)*(%d) < %d", i, intersectionWidth, bytePerPixel, BURSTLEN_BYTES);
                     burstLengthCheckDone = false;
                     break;
@@ -1507,7 +1507,7 @@ void ExynosOverlayDisplay::determineBandwidthSupport(hwc_display_contents_1_t *c
             }
         }
         handleTotalBandwidthOverload(contents);
-        if ((size_t)intersectionCnt > mMaxWindowOverlapCnt) {
+        if (intersectionCnt > mMaxWindowOverlapCnt) {
             HLOGD("Total Overlap Cnt(%d) >  Max Overlap Cnt(%d)", intersectionCnt, mMaxWindowOverlapCnt);
             changed = true;
             reduceAvailableWindowCnt = true;
@@ -1864,7 +1864,7 @@ void ExynosOverlayDisplay::handleTotalBandwidthOverload(hwc_display_contents_1_t
                     break;
             }
             if (mHwc->totPixels >= FIMD_TOTAL_BW_LIMIT) {
-                for (size_t i = mLastFb + 1; i < contents->numHwLayers - 1; i++) {
+                for (int i = mLastFb + 1; i < contents->numHwLayers - 1; i++) {
                     hwc_layer_1_t &layer = contents->hwLayers[i];
                     refreshGscUsage(layer);
                     layer.compositionType = HWC_FRAMEBUFFER;
@@ -1881,7 +1881,7 @@ void ExynosOverlayDisplay::handleTotalBandwidthOverload(hwc_display_contents_1_t
             for (size_t i = 0; i < contents->numHwLayers; i++) {
                 hwc_layer_1_t &layer = contents->hwLayers[i];
                 if (layer.compositionType == HWC_OVERLAY &&
-                        mForceOverlayLayerIndex != (int)i) {
+                        mForceOverlayLayerIndex != i) {
                     refreshGscUsage(layer);
                     layer.compositionType = HWC_FRAMEBUFFER;
                     mLastFb = max(mLastFb, i);

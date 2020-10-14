@@ -17,13 +17,14 @@ include $(CLEAR_VARS)
 
 LOCAL_PRELINK_MODULE := false
 
-LOCAL_SHARED_LIBRARIES := liblog libutils libcutils libexynosutils libexynosv4l2 \
+LOCAL_SHARED_LIBRARIES := liblog libion libutils libcutils libexynosutils libexynosv4l2 \
                           libhwcutils libexynosdisplay libmpp libsync
 
 LOCAL_CFLAGS += -DLOG_TAG=\"virtual\"
 LOCAL_CFLAGS += -DHLOG_CODE=3
 
 LOCAL_C_INCLUDES := \
+	$(TARGET_OUT_INTERMEDIATES)/KERNEL_OBJ/usr/include \
 	$(TOP)/hardware/samsung_slsi/$(TARGET_SOC)/include \
 	$(TOP)/hardware/samsung_slsi/$(TARGET_BOARD_PLATFORM)/include \
 	$(LOCAL_PATH)/../include \
@@ -39,6 +40,9 @@ LOCAL_C_INCLUDES += $(LOCAL_PATH)/../libvppdisplay
 else
 LOCAL_C_INCLUDES += $(LOCAL_PATH)/../libdisplay
 endif
+
+LOCAL_ADDITIONAL_DEPENDENCIES := \
+	$(TARGET_OUT_INTERMEDIATES)/KERNEL_OBJ/usr
 
 LOCAL_SRC_FILES := \
 	ExynosVirtualDisplay.cpp

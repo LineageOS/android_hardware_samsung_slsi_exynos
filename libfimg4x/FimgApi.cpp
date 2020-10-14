@@ -455,7 +455,7 @@ void printDataBlitImage(const char *title, struct fimg2d_image *image)
 {
     if (NULL != image) {
         SLOGI("    Image_%s\n", title);
-        SLOGI("        addr = %lx\n", image->addr.start);
+        SLOGI("        addr = %lu\n", image->addr.start);
         SLOGI("        format = %d\n", image->fmt);
         SLOGI("        size = (%d, %d)\n", image->width, image->height);
     } else {

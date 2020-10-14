@@ -24,7 +24,7 @@ class ExynosVirtualDisplay : public ExynosDisplay {
         virtual void unmapAddrFBTarget();
         virtual int blank();
         virtual int getConfig();
-        virtual int32_t getDisplayAttributes(const uint32_t attribute);
+        virtual int32_t getDisplayAttributes(const uint32_t attribute, uint32_t config);
         bool isNewHandle(void *dstHandle);
         bool isLayerResized(hwc_layer_1_t *layer);
         bool isLayerFullSize(hwc_layer_1_t *layer);

@@ -54,7 +54,7 @@ ExynosMPP::ExynosMPP(ExynosDisplay *display, int gscIndex)
     mDoubleOperation = false;
     mBufferFreeThread = new BufferFreeThread(this);
     mBufferFreeThread->mRunning = true;
-    mBufferFreeThread->run("MPPThread");
+    mBufferFreeThread->run("ExynosMPP");
 }
 
 ExynosMPP::~ExynosMPP()
@@ -524,6 +524,8 @@ int ExynosMPP::processOTF(hwc_layer_1_t &layer)
     ATRACE_CALL();
     ALOGV("configuring gscaler %u for memory-to-fimd-localout", mIndex);
 
+
+
     int ret = 0;
 
     int dstAlign;
@@ -782,7 +784,6 @@ int ExynosMPP::processM2M(hwc_layer_1_t &layer, int dst_format, hwc_frect_t *sou
 {
     ATRACE_CALL();
     ALOGV("configuring gscaler %u for memory-to-memory", AVAILABLE_GSC_UNITS[mIndex]);
-
 #ifdef USES_VIRTUAL_DISPLAY
     alloc_device_t* alloc_device = mDisplay->mAllocDevice;
 #endif
@@ -792,6 +793,7 @@ int ExynosMPP::processM2M(hwc_layer_1_t &layer, int dst_format, hwc_frect_t *sou
     buffer_handle_t mid_buf;
     private_handle_t *mid_handle;
     int ret = 0;
+
 
     if (isUsingMSC()) {
         if (dst_format != HAL_PIXEL_FORMAT_RGB_565)

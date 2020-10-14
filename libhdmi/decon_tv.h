@@ -1,4 +1,4 @@
-#ifndef SAMSUNG_DEOCN_TV_H
+#ifndef SAMSUNG_DECON_TV_H
 #define SAMSUNG_DECON_TV_H
 
 struct exynos_hdmi_data {

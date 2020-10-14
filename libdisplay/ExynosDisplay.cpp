@@ -2,6 +2,7 @@
 #include "ExynosHWCUtils.h"
 #include <utils/misc.h>
 
+#if 0
 bool winConfigChanged(s3c_fb_win_config *c1, s3c_fb_win_config *c2)
 {
     return c1->state != c2->state ||
@@ -16,7 +17,13 @@ bool winConfigChanged(s3c_fb_win_config *c1, s3c_fb_win_config *c2)
             c1->blending != c2->blending ||
             c1->plane_alpha != c2->plane_alpha;
 }
-
+#else
+bool winConfigChanged(s3c_fb_win_config *c1 __unused, s3c_fb_win_config *c2 __unused)
+{
+    /* Force this check to always return true, otherwise we have unreliable retire fences */
+    return true;
+}
+#endif
 void dumpConfig(s3c_fb_win_config &c)
 {
     ALOGV("\tstate = %u", c.state);
@@ -169,7 +176,7 @@ void ExynosDisplay::allocateLayerInfos(hwc_display_contents_1_t* contents)
         mLayerInfos.clear();
     }
 
-    for (size_t i= 0; i < contents->numHwLayers; i++) {
+    for (int i= 0; i < contents->numHwLayers; i++) {
         ExynosLayerInfo *layerInfo = new ExynosLayerInfo();
         mLayerInfos.push(layerInfo);
     }

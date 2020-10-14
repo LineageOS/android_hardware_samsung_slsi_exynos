@@ -195,7 +195,8 @@ SYNC_FAIL:
 
 bool FimgV4x::t_Lock(void)
 {
-    return m_lock.lock();
+    m_lock.lock();
+    return true;
 }
 
 bool FimgV4x::t_UnLock(void)
@@ -206,6 +207,7 @@ bool FimgV4x::t_UnLock(void)
 
 bool FimgV4x::m_CreateG2D(void)
 {
+
     int val = 0;
 
     if (m_g2dFd != 0) {

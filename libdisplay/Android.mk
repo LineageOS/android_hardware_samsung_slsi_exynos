@@ -57,4 +57,3 @@ LOCAL_MODULE := libexynosdisplay
 
 include $(TOP)/hardware/samsung_slsi/exynos/BoardConfigCFlags.mk
 include $(BUILD_SHARED_LIBRARY)
-

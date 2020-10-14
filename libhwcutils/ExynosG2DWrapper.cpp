@@ -836,4 +836,3 @@ int ExynosG2DWrapper::exynos5_config_g2d(hwc_layer_1_t &layer __unused, private_
     return -1;
 #endif
 }
-
