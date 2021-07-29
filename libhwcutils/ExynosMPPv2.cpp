@@ -735,7 +735,7 @@ int ExynosMPP::reallocateBuffers(private_handle_t *srcHandle, exynos_mpp_img &ds
                     strerror(-ret));
             return ret;
         }
-        HDEBUGLOGD(eDebugMPP, "%d dst buffer is allocated, mAllocatedBufferNum(%d)", mCurrentBuf, mAllocatedBufferNum);
+        HDEBUGLOGD(eDebugMPP, "%zu dst buffer is allocated, mAllocatedBufferNum(%d)", mCurrentBuf, mAllocatedBufferNum);
         mAllocatedBufferNum++;
     }
 
@@ -747,7 +747,7 @@ int ExynosMPP::reallocateBuffers(private_handle_t *srcHandle, exynos_mpp_img &ds
                     midImg.w, midImg.h, strerror(-ret));
             return ret;
         }
-        HDEBUGLOGD(eDebugMPP, "%d mid buffer is allocated, mAllocatedBufferNum(%d)", mCurrentBuf, mAllocatedMidBufferNum);
+        HDEBUGLOGD(eDebugMPP, "%zu mid buffer is allocated, mAllocatedBufferNum(%d)", mCurrentBuf, mAllocatedMidBufferNum);
         mAllocatedMidBufferNum++;
     }
 
