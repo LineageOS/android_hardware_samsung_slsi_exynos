@@ -2643,7 +2643,7 @@ void ExynosDisplay::determineBandwidthSupport(hwc_display_contents_1_t *contents
                     supportedInternalMPP->mState = MPP_STATE_ASSIGNED;
                     mLayerInfos[fbIndex]->mInternalMPP = supportedInternalMPP;
                     mLayerInfos[fbIndex]->mDmaType = getDeconDMAType(mLayerInfos[fbIndex]->mInternalMPP);
-#if defined(MAX_DECON_DMA_TYPE)
+#if (decon_idma_type == MAX_DECON_DMA_TYPE)
                     if (mLayerInfos[fbIndex]->mDmaType >= MAX_DECON_DMA_TYPE) {
 #else
                     if (mLayerInfos[fbIndex]->mDmaType >= IDMA_MAX) {
