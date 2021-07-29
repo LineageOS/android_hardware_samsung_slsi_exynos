@@ -238,7 +238,7 @@ void CAppMarkerWriter::PrepareAppWriter(char *base, exif_attribute_t *exif, debu
 
             len = debug->debugSize[appid];
             if ((len == 0) || (len > (JPEG_MAX_SEGMENT_SIZE - JPEG_SEGMENT_LENFIELD_SIZE))) {
-                ALOGE("Invalid APP%d segment size, %zu bytes", appid, len);
+                ALOGE("Invalid APP%d segment size, %u bytes", appid, len);
                 return;
             }
 
@@ -260,7 +260,7 @@ void CAppMarkerWriter::PrepareAppWriter(char *base, exif_attribute_t *exif, debu
     //   |                                                              |
     //  SOI                                                           DHTofMain
 
-    ALOGD("APP1: %zu bytes(ThumbMax %zu)", m_szApp1, m_szMaxThumbSize);
+    ALOGD("APP1: %hu bytes(ThumbMax %zu)", m_szApp1, m_szMaxThumbSize);
 }
 
 #define APPMARKLEN (JPEG_MARKER_SIZE + JPEG_SEGMENT_LENFIELD_SIZE)

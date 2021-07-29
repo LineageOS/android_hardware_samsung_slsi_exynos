@@ -755,7 +755,7 @@ CHWJpegV4L2Decompressor::~CHWJpegV4L2Decompressor()
 bool CHWJpegV4L2Decompressor::PrepareCapture()
 {
     if (m_v4l2DstBuffer.length < m_v4l2Format.fmt.pix.sizeimage) {
-        ALOGE("The size of the buffer %zu is smaller than required %u",
+        ALOGE("The size of the buffer %u is smaller than required %u",
               m_v4l2DstBuffer.length, m_v4l2Format.fmt.pix.sizeimage);
         return false;
     }
