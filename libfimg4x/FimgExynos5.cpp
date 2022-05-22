@@ -53,30 +53,28 @@ FimgApi *FimgV4x::CreateInstance()
 {
     FimgApi *ptrFimg = NULL;
 
-    for(int i = m_curFimgV4xIndex; i < NUMBER_FIMG_LIST; i++) {
-        if (m_ptrFimgApiList[i] == NULL)
-            m_ptrFimgApiList[i] = new FimgV4x;
+    while (m_curFimgV4xIndex < NUMBER_FIMG_LIST) {
+        if (m_ptrFimgApiList[m_curFimgV4xIndex] == NULL)
+            m_ptrFimgApiList[m_curFimgV4xIndex] = new FimgV4x;
 
-        if (m_ptrFimgApiList[i]->FlagCreate() == false) {
-            if (m_ptrFimgApiList[i]->Create() == false) {
-                PRINT("%s::Create(%d) fail\n", __func__, i);
+        if (m_ptrFimgApiList[m_curFimgV4xIndex]->FlagCreate() == false) {
+            if (m_ptrFimgApiList[m_curFimgV4xIndex]->Create() == false) {
+                PRINT("%s::Create(%d) fail\n", __func__, m_curFimgV4xIndex);
                 goto CreateInstance_End;
-            }
-            else
+            } else
                 m_numOfInstance++;
         }
 
-        if (i < NUMBER_FIMG_LIST - 1)
-            m_curFimgV4xIndex = i + 1;
+        if (m_curFimgV4xIndex < NUMBER_FIMG_LIST - 1)
+            m_curFimgV4xIndex++;
         else
             m_curFimgV4xIndex = 0;
 
-        ptrFimg = m_ptrFimgApiList[i];
+        ptrFimg = m_ptrFimgApiList[m_curFimgV4xIndex];
         goto CreateInstance_End;
     }
 
-CreateInstance_End :
-
+CreateInstance_End:
     return ptrFimg;
 }
 
